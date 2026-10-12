@@ -1,0 +1,261 @@
+{
+  "app": { "name": "FlowBreak", "tagline": "Work healthy, stay focused" },
+  "nav": {
+    "today": "Today",
+    "tasks": "Tasks",
+    "stats": "Stats",
+    "settings": "Settings",
+    "label": "Main navigation"
+  },
+  "greeting": {
+    "morning": "Good morning",
+    "afternoon": "Good afternoon",
+    "evening": "Good evening"
+  },
+  "common": {
+    "undo": "Undo",
+    "close": "Close",
+    "minutes": "{{count}} min",
+    "seconds": "{{count}} sec",
+    "loading": "Loading…",
+    "showTable": "Show as table",
+    "hideTable": "Hide table"
+  },
+  "hydration": {
+    "title": "Hydration",
+    "progressLabel": "{{current}} of {{goal}} ml drunk",
+    "ofGoal": "/ {{goal}} ml",
+    "add": "+{{amount}} ml",
+    "addAria": "Log {{amount}} ml of water",
+    "nextIn": "Next reminder in {{minutes}} min",
+    "nextSoon": "Water break coming up",
+    "goalReached": "Daily goal reached 🎉",
+    "remaining": "{{ml}} ml to go",
+    "logged": "Logged {{amount}} ml 💧",
+    "disabled": "Water reminders are off"
+  },
+  "movement": {
+    "title": "Movement",
+    "sitting": "Sitting for {{minutes}} min",
+    "nextIn": "Stretch break in {{minutes}} min",
+    "nextSoon": "Time to stand up soon",
+    "startNow": "Move now",
+    "doneToday_one": "{{count}} movement break today",
+    "doneToday_other": "{{count}} movement breaks today",
+    "library": "Exercise library",
+    "libraryHint": "Pick a short one, all under 2 minutes.",
+    "disabled": "Movement reminders are off",
+    "session": {
+      "step": "Step {{current}}/{{total}}",
+      "pause": "Pause",
+      "resume": "Resume",
+      "finish": "Done",
+      "next": "Next step",
+      "close": "Close exercise",
+      "completeTitle": "Nice work! 💪",
+      "completeBody": "Your body thanks you. Back to it!",
+      "logged": "Exercise logged",
+      "timeLeft": "Time left"
+    }
+  },
+  "exercises": {
+    "neck-roll": {
+      "name": "Neck release",
+      "summary": "Ease neck tension from screen time.",
+      "steps": [
+        "Sit tall and relax your shoulders.",
+        "Tilt your head to the right, ear toward shoulder, hold gently.",
+        "Tilt to the left and hold gently.",
+        "Drop your chin to your chest and roll your head slowly."
+      ]
+    },
+    "shoulder-roll": {
+      "name": "Shoulder rolls",
+      "summary": "Wake up your shoulders and upper back.",
+      "steps": [
+        "Shrug both shoulders up to your ears, hold 2 s, release.",
+        "Roll your shoulders backward in big circles.",
+        "Switch direction and roll forward."
+      ]
+    },
+    "standing-stretch": {
+      "name": "Full-body reach",
+      "summary": "Lengthen the spine and boost circulation.",
+      "steps": [
+        "Stand up, feet hip-width apart.",
+        "Interlace your fingers and reach up high, breathe in.",
+        "Lean to the right, then to the left.",
+        "Lower your arms and breathe out slowly."
+      ]
+    },
+    "wrist-stretch": {
+      "name": "Wrist stretch",
+      "summary": "For hands that type all day.",
+      "steps": [
+        "Extend your right arm, palm facing out.",
+        "Gently pull the fingers back with your left hand.",
+        "Switch hands and repeat.",
+        "Circle both wrists slowly."
+      ]
+    },
+    "chest-opener": {
+      "name": "Chest opener",
+      "summary": "Counter slouching and breathe deeper.",
+      "steps": [
+        "Stand tall and clasp your hands behind your back.",
+        "Draw your shoulders back, lift your chest, look ahead.",
+        "Hold and breathe deeply."
+      ]
+    },
+    "calf-raise": {
+      "name": "Calf raises",
+      "summary": "Activate your calves after long sitting.",
+      "steps": [
+        "Stand tall, lightly holding the desk if needed.",
+        "Rise onto your toes and hold for 2 s.",
+        "Lower slowly and repeat at a steady pace."
+      ]
+    },
+    "eye-rest": {
+      "name": "Eye rest",
+      "summary": "The 20-20-20 rule for tired eyes.",
+      "steps": [
+        "Look away from the screen.",
+        "Focus on something about 6 metres away.",
+        "Blink slowly a few times, then close your eyes."
+      ]
+    },
+    "walk": {
+      "name": "Short walk",
+      "summary": "Walk a few laps and refill your water.",
+      "steps": [
+        "Stand up and walk at an easy pace.",
+        "Relax your arms and let them swing.",
+        "Grab a glass of water on the way."
+      ]
+    }
+  },
+  "todos": {
+    "title": "Tasks",
+    "today": "Today's tasks",
+    "addPlaceholder": "Add a task and press Enter…",
+    "addAria": "New task title",
+    "add": "Add",
+    "emptyTitle": "No tasks yet",
+    "emptyBody": "Add your first task to start a productive day.",
+    "emptyAction": "Add a task",
+    "allDone": "All done! Take a little break ☕",
+    "completedSection": "Completed ({{count}})",
+    "deleted": "Deleted “{{title}}”",
+    "markDone": "Mark as done: {{title}}",
+    "markUndone": "Mark as not done: {{title}}",
+    "delete": "Delete: {{title}}",
+    "important": "Important",
+    "toggleImportant": "Mark important: {{title}}",
+    "focus": "Focus on: {{title}}",
+    "moveUp": "Move up: {{title}}",
+    "moveDown": "Move down: {{title}}",
+    "editAria": "Edit task title",
+    "viewAll": "View all",
+    "remaining_one": "{{count}} task left",
+    "remaining_other": "{{count}} tasks left",
+    "clearCompleted": "Clear completed",
+    "cleared_one": "Cleared {{count}} completed task",
+    "cleared_other": "Cleared {{count}} completed tasks",
+    "reorderHint": "Drag or Alt+↑/↓ to reorder, double-click to edit.",
+    "completedToast": "Completed “{{title}}” ✓"
+  },
+  "focus": {
+    "active": "Focusing",
+    "general": "Focus session",
+    "remaining": "{{time}} left",
+    "end": "End",
+    "start": "Start focus",
+    "pickDuration": "Choose duration",
+    "hint": "Reminders wait up to 15 minutes.",
+    "finished": "Focus session done! Take a short break.",
+    "durationOption": "{{count}} min"
+  },
+  "reminders": {
+    "water": {
+      "title": "Time for some water 💧",
+      "body": "Take a sip to stay sharp.",
+      "gentle": "When you wrap up, grab a sip of water."
+    },
+    "movement": {
+      "title": "Time to stand and stretch 🧘",
+      "body": "You've been sitting for {{minutes}} min. Try “{{exercise}}” for {{duration}}.",
+      "gentle": "Once this task is done, stand up and stretch a little."
+    },
+    "combinedTitle": "Time for a short break",
+    "drank": "Drank",
+    "start": "Start",
+    "snooze": "Snooze 10 min",
+    "skip": "Skip",
+    "pause": "Pause reminders",
+    "pause30": "30 min",
+    "pause60": "1 hour",
+    "pauseToday": "Rest of today",
+    "pausedUntil": "Reminders paused until {{time}}",
+    "resume": "Resume",
+    "outsideHours": "Outside work hours, no reminders",
+    "away": "You're away"
+  },
+  "stats": {
+    "title": "Stats",
+    "range": "Last 7 days",
+    "water": "Water per day",
+    "waterUnit": "ml",
+    "movement": "Movement breaks per day",
+    "tasks": "Tasks completed per day",
+    "avgWater": "Avg water/day",
+    "goalDays": "Goal days",
+    "totalMoves": "Movement breaks",
+    "totalTasks": "Tasks done",
+    "goal": "Goal",
+    "day": "Day",
+    "emptyTitle": "No data yet",
+    "emptyBody": "Drink water, move and finish tasks, and your stats will appear here."
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System",
+    "language": "Language",
+    "water": "Hydration",
+    "waterEnabled": "Water reminders",
+    "waterGoal": "Daily goal (ml)",
+    "cupSize": "Cup size (ml)",
+    "waterInterval": "Remind every (min)",
+    "movement": "Movement",
+    "movementEnabled": "Stand-up reminders",
+    "movementInterval": "Remind after sitting (min)",
+    "schedule": "Work hours",
+    "scheduleHint": "Reminders only appear during these hours.",
+    "workStart": "Start",
+    "workEnd": "End",
+    "workDays": "Work days",
+    "notifications": "Notifications",
+    "popup": "The corner reminder popup is always on.",
+    "systemNotify": "Also send Windows notifications",
+    "systemNotifyHint": "Adds a notification to the Action Center.",
+    "system": "System",
+    "autostart": "Start with Windows",
+    "autostartHint": "Runs quietly in the system tray at login.",
+    "shortcut": "Global shortcut",
+    "shortcutHint": "Log water from anywhere.",
+    "privacy": "All data stays on your computer.",
+    "decrease": "Decrease {{label}}",
+    "increase": "Increase {{label}}",
+    "weekdays": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+  },
+  "tray": {
+    "show": "Open FlowBreak",
+    "water": "Drink water (+{{amount}} ml)",
+    "pause": "Pause reminders for 1 hour",
+    "quit": "Quit FlowBreak"
+  }
+}

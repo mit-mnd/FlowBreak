@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "FlowBreak",
+  "version": "0.1.0",
+  "identifier": "com.flowbreak.app",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "FlowBreak",
+        "width": 420,
+        "height": 720,
+        "minWidth": 360,
+        "minHeight": 560,
+        "center": true,
+        "visible": false
+      }
+    ],
+    "security": {
+      "devCsp": null,
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["msi", "nsis"],
+    "category": "Productivity",
+    "shortDescription": "Nhắc uống nước, vận động và quản lý công việc",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "nsis": {
+        "languages": ["Vietnamese", "English", "Korean"],
+        "displayLanguageSelector": true
+      }
+    }
+  }
+}

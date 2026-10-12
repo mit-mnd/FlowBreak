@@ -1,0 +1,258 @@
+{
+  "app": { "name": "FlowBreak", "tagline": "건강하게 일하고, 꾸준히 집중하세요" },
+  "nav": {
+    "today": "오늘",
+    "tasks": "할 일",
+    "stats": "통계",
+    "settings": "설정",
+    "label": "주요 메뉴"
+  },
+  "greeting": {
+    "morning": "좋은 아침이에요",
+    "afternoon": "좋은 오후예요",
+    "evening": "좋은 저녁이에요"
+  },
+  "common": {
+    "undo": "실행 취소",
+    "close": "닫기",
+    "minutes": "{{count}}분",
+    "seconds": "{{count}}초",
+    "loading": "불러오는 중…",
+    "showTable": "표로 보기",
+    "hideTable": "표 숨기기"
+  },
+  "hydration": {
+    "title": "물 마시기",
+    "progressLabel": "{{goal}}ml 중 {{current}}ml 마심",
+    "ofGoal": "/ {{goal}} ml",
+    "add": "+{{amount}} ml",
+    "addAria": "물 {{amount}}ml 기록",
+    "nextIn": "{{minutes}}분 후 다음 알림",
+    "nextSoon": "곧 물 마실 시간이에요",
+    "goalReached": "오늘 목표 달성! 🎉",
+    "remaining": "{{ml}}ml 남음",
+    "logged": "{{amount}}ml 기록했어요 💧",
+    "disabled": "물 알림이 꺼져 있어요"
+  },
+  "movement": {
+    "title": "움직이기",
+    "sitting": "{{minutes}}분째 앉아 있어요",
+    "nextIn": "{{minutes}}분 후 스트레칭 시간",
+    "nextSoon": "곧 일어날 시간이에요",
+    "startNow": "지금 움직이기",
+    "doneToday_other": "오늘 {{count}}회 움직였어요",
+    "library": "운동 목록",
+    "libraryHint": "모두 2분 이내의 짧은 운동이에요.",
+    "disabled": "움직임 알림이 꺼져 있어요",
+    "session": {
+      "step": "{{current}}/{{total}} 단계",
+      "pause": "일시정지",
+      "resume": "계속",
+      "finish": "완료",
+      "next": "다음 단계",
+      "close": "운동 닫기",
+      "completeTitle": "잘하셨어요! 💪",
+      "completeBody": "몸이 고마워할 거예요. 다시 힘내 봐요!",
+      "logged": "운동을 기록했어요",
+      "timeLeft": "남은 시간"
+    }
+  },
+  "exercises": {
+    "neck-roll": {
+      "name": "목 풀기",
+      "summary": "화면을 오래 본 목의 긴장을 풀어 줘요.",
+      "steps": [
+        "허리를 펴고 어깨에 힘을 빼세요.",
+        "고개를 오른쪽으로 기울여 귀를 어깨 쪽으로, 살짝 유지하세요.",
+        "왼쪽으로 기울여 살짝 유지하세요.",
+        "턱을 가슴 쪽으로 내리고 천천히 고개를 돌리세요."
+      ]
+    },
+    "shoulder-roll": {
+      "name": "어깨 돌리기",
+      "summary": "어깨와 등 윗부분을 깨워요.",
+      "steps": [
+        "양어깨를 귀까지 올려 2초 유지한 뒤 내리세요.",
+        "어깨를 뒤로 크게 원을 그리며 돌리세요.",
+        "방향을 바꿔 앞으로 돌리세요."
+      ]
+    },
+    "standing-stretch": {
+      "name": "전신 늘이기",
+      "summary": "척추를 늘이고 혈액 순환을 도와요.",
+      "steps": [
+        "일어나서 발을 골반 너비로 벌리세요.",
+        "깍지를 끼고 위로 쭉 뻗으며 숨을 들이마시세요.",
+        "몸을 오른쪽, 왼쪽으로 기울이세요.",
+        "팔을 내리고 천천히 숨을 내쉬세요."
+      ]
+    },
+    "wrist-stretch": {
+      "name": "손목 스트레칭",
+      "summary": "하루 종일 타이핑하는 손을 위해.",
+      "steps": [
+        "오른팔을 앞으로 뻗고 손바닥을 바깥쪽으로 향하세요.",
+        "왼손으로 손가락을 몸 쪽으로 살짝 당기세요.",
+        "손을 바꿔 반복하세요.",
+        "양 손목을 천천히 돌리세요."
+      ]
+    },
+    "chest-opener": {
+      "name": "가슴 펴기",
+      "summary": "굽은 자세를 바로잡고 깊게 숨 쉬어요.",
+      "steps": [
+        "바르게 서서 등 뒤로 깍지를 끼세요.",
+        "어깨를 뒤로 당기고 가슴을 펴며 앞을 보세요.",
+        "자세를 유지하며 깊게 호흡하세요."
+      ]
+    },
+    "calf-raise": {
+      "name": "까치발 들기",
+      "summary": "오래 앉아 저린 종아리를 깨워요.",
+      "steps": [
+        "바르게 서고 필요하면 책상을 가볍게 잡으세요.",
+        "발뒤꿈치를 들어 2초 유지하세요.",
+        "천천히 내리고 일정한 속도로 반복하세요."
+      ]
+    },
+    "eye-rest": {
+      "name": "눈 휴식",
+      "summary": "피곤한 눈을 위한 20-20-20 규칙.",
+      "steps": [
+        "화면에서 눈을 떼세요.",
+        "약 6미터 떨어진 곳을 바라보세요.",
+        "천천히 몇 번 눈을 깜박인 뒤 눈을 감으세요."
+      ]
+    },
+    "walk": {
+      "name": "짧은 산책",
+      "summary": "몇 바퀴 걷고 물도 채워 오세요.",
+      "steps": [
+        "일어나서 편안한 속도로 걸으세요.",
+        "팔에 힘을 빼고 자연스럽게 흔드세요.",
+        "가는 길에 물 한 잔 챙기세요."
+      ]
+    }
+  },
+  "todos": {
+    "title": "할 일",
+    "today": "오늘 할 일",
+    "addPlaceholder": "할 일을 입력하고 Enter…",
+    "addAria": "새 할 일 제목",
+    "add": "추가",
+    "emptyTitle": "아직 할 일이 없어요",
+    "emptyBody": "첫 할 일을 추가하고 알찬 하루를 시작하세요.",
+    "emptyAction": "할 일 추가",
+    "allDone": "모두 끝냈어요! 잠깐 쉬어 가세요 ☕",
+    "completedSection": "완료 ({{count}})",
+    "deleted": "“{{title}}” 삭제됨",
+    "markDone": "완료로 표시: {{title}}",
+    "markUndone": "미완료로 표시: {{title}}",
+    "delete": "삭제: {{title}}",
+    "important": "중요",
+    "toggleImportant": "중요 표시: {{title}}",
+    "focus": "집중하기: {{title}}",
+    "moveUp": "위로 이동: {{title}}",
+    "moveDown": "아래로 이동: {{title}}",
+    "editAria": "할 일 제목 수정",
+    "viewAll": "모두 보기",
+    "remaining_other": "{{count}}개 남음",
+    "clearCompleted": "완료 항목 지우기",
+    "cleared_other": "완료한 할 일 {{count}}개를 지웠어요",
+    "reorderHint": "끌거나 Alt+↑/↓로 순서 변경, 두 번 클릭해 수정.",
+    "completedToast": "“{{title}}” 완료 ✓"
+  },
+  "focus": {
+    "active": "집중 중",
+    "general": "집중 세션",
+    "remaining": "{{time}} 남음",
+    "end": "종료",
+    "start": "집중 시작",
+    "pickDuration": "시간 선택",
+    "hint": "알림은 최대 15분까지 미뤄져요.",
+    "finished": "집중 세션 끝! 잠깐 쉬어 가세요.",
+    "durationOption": "{{count}}분"
+  },
+  "reminders": {
+    "water": {
+      "title": "물 마실 시간이에요 💧",
+      "body": "한 모금 마시고 맑은 정신을 유지하세요.",
+      "gentle": "하던 일을 마치면 물 한 모금 마셔요."
+    },
+    "movement": {
+      "title": "일어나서 가볍게 움직여요 🧘",
+      "body": "{{minutes}}분째 앉아 있어요. “{{exercise}}”를 {{duration}} 해 보세요.",
+      "gentle": "이 일을 마치면 일어나서 몸을 좀 풀어요."
+    },
+    "combinedTitle": "잠깐 쉬어 갈 시간",
+    "drank": "마셨어요",
+    "start": "시작",
+    "snooze": "10분 뒤에",
+    "skip": "건너뛰기",
+    "pause": "알림 일시정지",
+    "pause30": "30분",
+    "pause60": "1시간",
+    "pauseToday": "오늘 하루",
+    "pausedUntil": "{{time}}까지 알림 일시정지",
+    "resume": "다시 켜기",
+    "outsideHours": "근무 시간 외에는 알리지 않아요",
+    "away": "자리를 비운 상태예요"
+  },
+  "stats": {
+    "title": "통계",
+    "range": "최근 7일",
+    "water": "일별 물 섭취량",
+    "waterUnit": "ml",
+    "movement": "일별 움직임 횟수",
+    "tasks": "일별 완료한 할 일",
+    "avgWater": "하루 평균 물",
+    "goalDays": "목표 달성일",
+    "totalMoves": "움직임 횟수",
+    "totalTasks": "완료한 할 일",
+    "goal": "목표",
+    "day": "날짜",
+    "emptyTitle": "아직 데이터가 없어요",
+    "emptyBody": "물을 마시고, 움직이고, 할 일을 끝내면 여기에 통계가 표시돼요."
+  },
+  "settings": {
+    "title": "설정",
+    "appearance": "화면",
+    "theme": "테마",
+    "themeLight": "라이트",
+    "themeDark": "다크",
+    "themeSystem": "시스템",
+    "language": "언어",
+    "water": "물 마시기",
+    "waterEnabled": "물 알림",
+    "waterGoal": "하루 목표 (ml)",
+    "cupSize": "1회 섭취량 (ml)",
+    "waterInterval": "알림 간격 (분)",
+    "movement": "움직이기",
+    "movementEnabled": "일어나기 알림",
+    "movementInterval": "앉은 뒤 알림 (분)",
+    "schedule": "근무 시간",
+    "scheduleHint": "이 시간에만 알림을 보내요.",
+    "workStart": "시작",
+    "workEnd": "종료",
+    "workDays": "근무일",
+    "notifications": "알림",
+    "popup": "화면 모서리 알림 창은 항상 켜져 있어요.",
+    "systemNotify": "Windows 알림도 함께 보내기",
+    "systemNotifyHint": "알림 센터에도 알림을 추가해요.",
+    "system": "시스템",
+    "autostart": "Windows 시작 시 실행",
+    "autostartHint": "로그인하면 시스템 트레이에서 조용히 실행돼요.",
+    "shortcut": "전역 단축키",
+    "shortcutHint": "어디서든 물 섭취를 기록해요.",
+    "privacy": "모든 데이터는 내 컴퓨터에만 저장돼요.",
+    "decrease": "{{label}} 줄이기",
+    "increase": "{{label}} 늘리기",
+    "weekdays": ["일", "월", "화", "수", "목", "금", "토"]
+  },
+  "tray": {
+    "show": "FlowBreak 열기",
+    "water": "물 마시기 (+{{amount}} ml)",
+    "pause": "1시간 동안 알림 일시정지",
+    "quit": "FlowBreak 종료"
+  }
+}

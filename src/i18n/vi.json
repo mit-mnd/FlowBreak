@@ -1,0 +1,261 @@
+{
+  "app": { "name": "FlowBreak", "tagline": "Làm việc khỏe, tập trung bền" },
+  "nav": {
+    "today": "Hôm nay",
+    "tasks": "Công việc",
+    "stats": "Thống kê",
+    "settings": "Cài đặt",
+    "label": "Điều hướng chính"
+  },
+  "greeting": {
+    "morning": "Chào buổi sáng",
+    "afternoon": "Chào buổi chiều",
+    "evening": "Chào buổi tối"
+  },
+  "common": {
+    "undo": "Hoàn tác",
+    "close": "Đóng",
+    "minutes": "{{count}} phút",
+    "seconds": "{{count}} giây",
+    "loading": "Đang tải…",
+    "showTable": "Xem dạng bảng",
+    "hideTable": "Ẩn bảng"
+  },
+  "hydration": {
+    "title": "Uống nước",
+    "progressLabel": "Đã uống {{current}} trên {{goal}} ml",
+    "ofGoal": "/ {{goal}} ml",
+    "add": "+{{amount}} ml",
+    "addAria": "Ghi nhận uống {{amount}} ml",
+    "nextIn": "Nhắc tiếp sau {{minutes}} phút",
+    "nextSoon": "Sắp đến giờ uống nước",
+    "goalReached": "Đạt mục tiêu hôm nay rồi 🎉",
+    "remaining": "Còn {{ml}} ml",
+    "logged": "Đã ghi nhận {{amount}} ml 💧",
+    "disabled": "Nhắc uống nước đang tắt"
+  },
+  "movement": {
+    "title": "Vận động",
+    "sitting": "Đã ngồi {{minutes}} phút",
+    "nextIn": "Nghỉ giải lao sau {{minutes}} phút",
+    "nextSoon": "Sắp đến giờ đứng dậy",
+    "startNow": "Vận động ngay",
+    "doneToday_one": "{{count}} lần vận động hôm nay",
+    "doneToday_other": "{{count}} lần vận động hôm nay",
+    "library": "Thư viện bài tập",
+    "libraryHint": "Chọn một bài ngắn, chỉ mất chưa đến 2 phút.",
+    "disabled": "Nhắc vận động đang tắt",
+    "session": {
+      "step": "Bước {{current}}/{{total}}",
+      "pause": "Tạm dừng",
+      "resume": "Tiếp tục",
+      "finish": "Đã tập xong",
+      "next": "Bước tiếp",
+      "close": "Đóng bài tập",
+      "completeTitle": "Làm tốt lắm! 💪",
+      "completeBody": "Cơ thể bạn sẽ cảm ơn bạn. Quay lại làm việc thôi!",
+      "logged": "Đã ghi nhận bài tập",
+      "timeLeft": "Thời gian còn lại"
+    }
+  },
+  "exercises": {
+    "neck-roll": {
+      "name": "Thả lỏng cổ",
+      "summary": "Giảm căng cứng cổ sau thời gian nhìn màn hình.",
+      "steps": [
+        "Ngồi thẳng lưng, thả lỏng hai vai.",
+        "Nghiêng đầu sang phải, tai hướng về vai, giữ nhẹ.",
+        "Nghiêng đầu sang trái, giữ nhẹ.",
+        "Cúi cằm về ngực rồi xoay đầu chậm theo vòng tròn."
+      ]
+    },
+    "shoulder-roll": {
+      "name": "Xoay vai",
+      "summary": "Đánh thức vùng vai và lưng trên.",
+      "steps": [
+        "Nhún hai vai lên sát tai, giữ 2 giây rồi thả xuống.",
+        "Xoay vai ra sau theo vòng tròn lớn.",
+        "Đổi chiều, xoay vai ra trước."
+      ]
+    },
+    "standing-stretch": {
+      "name": "Vươn người toàn thân",
+      "summary": "Kéo giãn cột sống, tăng tuần hoàn máu.",
+      "steps": [
+        "Đứng dậy, hai chân rộng bằng vai.",
+        "Đan tay, vươn thẳng lên cao, hít sâu.",
+        "Nghiêng người sang phải, rồi sang trái.",
+        "Thả lỏng tay, thở ra chậm."
+      ]
+    },
+    "wrist-stretch": {
+      "name": "Giãn cổ tay",
+      "summary": "Dành cho đôi tay gõ phím cả ngày.",
+      "steps": [
+        "Duỗi tay phải ra trước, lòng bàn tay hướng ra ngoài.",
+        "Dùng tay trái kéo nhẹ các ngón tay về phía bạn.",
+        "Đổi tay và lặp lại.",
+        "Xoay hai cổ tay theo vòng tròn."
+      ]
+    },
+    "chest-opener": {
+      "name": "Mở ngực",
+      "summary": "Chống gù lưng, giúp thở sâu hơn.",
+      "steps": [
+        "Đứng thẳng, đan hai tay ra sau lưng.",
+        "Kéo vai về sau, ưỡn ngực nhẹ, nhìn thẳng.",
+        "Giữ tư thế và hít thở sâu."
+      ]
+    },
+    "calf-raise": {
+      "name": "Kiễng gót chân",
+      "summary": "Kích hoạt bắp chân, giảm tê chân khi ngồi lâu.",
+      "steps": [
+        "Đứng thẳng, có thể vịn nhẹ vào bàn.",
+        "Kiễng gót lên cao, giữ 2 giây.",
+        "Hạ gót chậm xuống và lặp lại đều nhịp."
+      ]
+    },
+    "eye-rest": {
+      "name": "Thư giãn mắt",
+      "summary": "Quy tắc 20-20-20 giúp mắt bớt mỏi.",
+      "steps": [
+        "Rời mắt khỏi màn hình.",
+        "Nhìn một vật ở xa khoảng 6 mét.",
+        "Chớp mắt chậm vài lần, nhắm mắt thư giãn."
+      ]
+    },
+    "walk": {
+      "name": "Đi bộ ngắn",
+      "summary": "Đi lại vài vòng, rót thêm nước nếu cần.",
+      "steps": [
+        "Đứng dậy và đi bộ thong thả.",
+        "Thả lỏng tay, vung tay nhẹ theo bước chân.",
+        "Tiện thể rót một cốc nước nhé."
+      ]
+    }
+  },
+  "todos": {
+    "title": "Công việc",
+    "today": "Việc hôm nay",
+    "addPlaceholder": "Thêm việc mới rồi nhấn Enter…",
+    "addAria": "Tiêu đề công việc mới",
+    "add": "Thêm",
+    "emptyTitle": "Chưa có việc nào",
+    "emptyBody": "Thêm việc đầu tiên để bắt đầu một ngày hiệu quả.",
+    "emptyAction": "Thêm việc",
+    "allDone": "Xong hết rồi! Nghỉ ngơi chút nhé ☕",
+    "completedSection": "Đã xong ({{count}})",
+    "deleted": "Đã xóa “{{title}}”",
+    "markDone": "Đánh dấu hoàn thành: {{title}}",
+    "markUndone": "Đánh dấu chưa xong: {{title}}",
+    "delete": "Xóa: {{title}}",
+    "important": "Quan trọng",
+    "toggleImportant": "Đánh dấu quan trọng: {{title}}",
+    "focus": "Tập trung vào: {{title}}",
+    "moveUp": "Chuyển lên: {{title}}",
+    "moveDown": "Chuyển xuống: {{title}}",
+    "editAria": "Sửa tiêu đề công việc",
+    "viewAll": "Xem tất cả",
+    "remaining_one": "Còn {{count}} việc",
+    "remaining_other": "Còn {{count}} việc",
+    "clearCompleted": "Xóa việc đã xong",
+    "cleared_one": "Đã xóa {{count}} việc đã xong",
+    "cleared_other": "Đã xóa {{count}} việc đã xong",
+    "reorderHint": "Kéo thả hoặc Alt+↑/↓ để sắp xếp, nhấp đúp để sửa.",
+    "completedToast": "Hoàn thành “{{title}}” ✓"
+  },
+  "focus": {
+    "active": "Đang tập trung",
+    "general": "Phiên tập trung",
+    "remaining": "còn {{time}}",
+    "end": "Kết thúc",
+    "start": "Bắt đầu tập trung",
+    "pickDuration": "Chọn thời lượng",
+    "hint": "Nhắc nhở sẽ được hoãn tối đa 15 phút.",
+    "finished": "Hết phiên tập trung! Nghỉ một chút nhé.",
+    "durationOption": "{{count}} phút"
+  },
+  "reminders": {
+    "water": {
+      "title": "Đến giờ uống nước 💧",
+      "body": "Uống một ngụm nước để giữ tỉnh táo nhé.",
+      "gentle": "Khi xong việc đang làm, nhớ uống chút nước nhé."
+    },
+    "movement": {
+      "title": "Đứng dậy vận động nhẹ 🧘",
+      "body": "Bạn đã ngồi {{minutes}} phút. Thử bài “{{exercise}}” trong {{duration}} nhé.",
+      "gentle": "Xong việc này thì đứng dậy giãn người một chút nhé."
+    },
+    "combinedTitle": "Đến giờ nghỉ một chút",
+    "drank": "Đã uống",
+    "start": "Bắt đầu tập",
+    "snooze": "Hoãn 10 phút",
+    "skip": "Bỏ qua",
+    "pause": "Tạm dừng nhắc",
+    "pause30": "30 phút",
+    "pause60": "1 giờ",
+    "pauseToday": "Đến hết ngày",
+    "pausedUntil": "Đã tạm dừng nhắc đến {{time}}",
+    "resume": "Bật lại",
+    "outsideHours": "Ngoài giờ làm việc, không nhắc nhở",
+    "away": "Bạn đang rời máy"
+  },
+  "stats": {
+    "title": "Thống kê",
+    "range": "7 ngày qua",
+    "water": "Nước uống mỗi ngày",
+    "waterUnit": "ml",
+    "movement": "Lần vận động mỗi ngày",
+    "tasks": "Việc hoàn thành mỗi ngày",
+    "avgWater": "Nước TB/ngày",
+    "goalDays": "Ngày đạt mục tiêu",
+    "totalMoves": "Lần vận động",
+    "totalTasks": "Việc đã xong",
+    "goal": "Mục tiêu",
+    "day": "Ngày",
+    "emptyTitle": "Chưa có dữ liệu",
+    "emptyBody": "Uống nước, vận động và hoàn thành công việc, thống kê sẽ xuất hiện ở đây."
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "appearance": "Giao diện",
+    "theme": "Chủ đề",
+    "themeLight": "Sáng",
+    "themeDark": "Tối",
+    "themeSystem": "Hệ thống",
+    "language": "Ngôn ngữ",
+    "water": "Uống nước",
+    "waterEnabled": "Nhắc uống nước",
+    "waterGoal": "Mục tiêu mỗi ngày (ml)",
+    "cupSize": "Dung tích mỗi lần (ml)",
+    "waterInterval": "Nhắc mỗi (phút)",
+    "movement": "Vận động",
+    "movementEnabled": "Nhắc đứng dậy vận động",
+    "movementInterval": "Nhắc sau khi ngồi (phút)",
+    "schedule": "Giờ làm việc",
+    "scheduleHint": "Chỉ nhắc trong khung giờ này.",
+    "workStart": "Bắt đầu",
+    "workEnd": "Kết thúc",
+    "workDays": "Ngày làm việc",
+    "notifications": "Thông báo",
+    "popup": "Cửa sổ nhắc ở góc màn hình luôn được bật.",
+    "systemNotify": "Kèm thông báo của Windows",
+    "systemNotifyHint": "Hiển thị thêm thông báo trong Action Center.",
+    "system": "Hệ thống",
+    "autostart": "Khởi động cùng Windows",
+    "autostartHint": "Chạy ẩn dưới khay hệ thống khi bật máy.",
+    "shortcut": "Phím tắt toàn cục",
+    "shortcutHint": "Ghi nhận uống nước ở bất kỳ đâu.",
+    "privacy": "Mọi dữ liệu chỉ được lưu trên máy của bạn.",
+    "decrease": "Giảm {{label}}",
+    "increase": "Tăng {{label}}",
+    "weekdays": ["CN", "T2", "T3", "T4", "T5", "T6", "T7"]
+  },
+  "tray": {
+    "show": "Mở FlowBreak",
+    "water": "Uống nước (+{{amount}} ml)",
+    "pause": "Tạm dừng nhắc 1 giờ",
+    "quit": "Thoát FlowBreak"
+  }
+}
