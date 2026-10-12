@@ -13,6 +13,7 @@ import {
   showReminderPopup,
 } from '@/lib/tauri'
 import { sendSystemNotification } from '@/lib/notifications'
+import { playReminderSound, type SoundChoice } from '@/lib/sound'
 import { toSchedulerConfig, useSettings } from '@/features/settings'
 import { isFocusActive, useFocus } from '@/features/focus'
 import { logWater, useHydration } from '@/features/hydration'
@@ -26,19 +27,30 @@ import type { ReminderActionMessage } from './ReminderContent'
 const TICK_MS = 30_000
 export const WATER_SHORTCUT = 'CommandOrControl+Shift+W'
 
-export type PopupPayload = ActiveReminder & { lang: Language; dark: boolean }
+/** `sound` is 'off' unless the popup is being (re)shown for new reminders. */
+export type PopupPayload = ActiveReminder & { lang: Language; dark: boolean; sound: SoundChoice }
 
 function popupHeight(kinds: number): number {
   return kinds > 1 ? 236 : 168
 }
 
-async function syncPopup(current: ActiveReminder | null, dark: boolean): Promise<void> {
+async function syncPopup(
+  current: ActiveReminder | null,
+  dark: boolean,
+  chime = false,
+): Promise<void> {
   if (!isTauri()) return
   if (!current) {
     await hideReminderPopup()
     return
   }
-  const payload: PopupPayload = { ...current, lang: useSettings.getState().settings.language, dark }
+  const { language, sound } = useSettings.getState().settings
+  const payload: PopupPayload = {
+    ...current,
+    lang: language,
+    dark,
+    sound: chime ? sound : 'off',
+  }
   await showReminderPopup({
     payload: JSON.stringify(payload),
     height: popupHeight(current.kinds.length),
@@ -69,7 +81,11 @@ export function useReminderEngine(ready: boolean, dark: boolean): void {
         sittingMin: minutesBetween(reminders().state.sittingSince, now),
       }
       reminders().setCurrent(current)
-      await syncPopup(current, darkRef.current).catch((err) => console.warn('Popup failed', err))
+      await syncPopup(current, darkRef.current, true).catch((err) =>
+        console.warn('Popup failed', err),
+      )
+      // In Tauri the popup window plays its own chime; here covers the browser dialog.
+      if (!isTauri()) void playReminderSound(useSettings.getState().settings.sound)
       if (useSettings.getState().settings.systemNotify) {
         const { title, body } = notificationText(current, i18n.t)
         await sendSystemNotification(title, body)

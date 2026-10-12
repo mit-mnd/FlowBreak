@@ -1,5 +1,6 @@
 import type { Language } from '@/i18n'
 import type { SchedulerConfig } from '@/lib/scheduler'
+import type { SoundChoice } from '@/lib/sound'
 
 export type ThemePreference = 'light' | 'dark' | 'system'
 
@@ -16,6 +17,7 @@ export type Settings = {
   workEnd: string
   workDays: number[]
   systemNotify: boolean
+  sound: SoundChoice
   autostart: boolean
 }
 
@@ -32,6 +34,7 @@ export const DEFAULT_SETTINGS: Settings = {
   workEnd: '18:00',
   workDays: [1, 2, 3, 4, 5],
   systemNotify: false,
+  sound: 'chime',
   autostart: false,
 }
 

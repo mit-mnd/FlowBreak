@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { isSoundChoice } from '@/lib/sound'
 import { kvGet, kvSet, setAutostart } from '@/lib/tauri'
 import { DEFAULT_SETTINGS, type Settings } from './types'
 
@@ -16,7 +17,9 @@ export const useSettings = create<SettingsStore>((set, get) => ({
   loaded: false,
   async load() {
     const saved = await kvGet<Partial<Settings>>(KEY)
-    set({ settings: { ...DEFAULT_SETTINGS, ...saved }, loaded: true })
+    const settings = { ...DEFAULT_SETTINGS, ...saved }
+    if (!isSoundChoice(settings.sound)) settings.sound = DEFAULT_SETTINGS.sound
+    set({ settings, loaded: true })
   },
   update(patch) {
     const settings = { ...get().settings, ...patch }

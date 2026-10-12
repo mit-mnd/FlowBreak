@@ -239,6 +239,23 @@
     "popup": "화면 모서리 알림 창은 항상 켜져 있어요.",
     "systemNotify": "Windows 알림도 함께 보내기",
     "systemNotifyHint": "알림 센터에도 알림을 추가해요.",
+    "sound": "알림 소리",
+    "soundHint": "알림 창이 나타날 때 재생할 소리를 고르세요.",
+    "soundPreview": "미리 듣기: {{name}}",
+    "sounds": {
+      "off": "소리 없음",
+      "drop": "물방울",
+      "bell": "울리는 종",
+      "chime": "윈드 차임",
+      "pulse": "세 번 핑"
+    },
+    "soundsHint": {
+      "off": "알림 창만 표시, 소리 없음",
+      "drop": "부드러운 두 번의 물방울 소리",
+      "bell": "맑게 울리는 종소리 한 번",
+      "chime": "밝게 올라가는 네 음",
+      "pulse": "짧은 세 번의 소리, 가장 눈에 띄어요"
+    },
     "system": "시스템",
     "autostart": "Windows 시작 시 실행",
     "autostartHint": "로그인하면 시스템 트레이에서 조용히 실행돼요.",

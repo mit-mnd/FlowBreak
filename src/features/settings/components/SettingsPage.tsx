@@ -9,6 +9,7 @@ import {
   Bell,
   Clock,
   ShieldCheck,
+  Volume2,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { LANGUAGES, type Language } from '@/i18n'
@@ -21,6 +22,7 @@ import { Segmented } from '@/components/Segmented'
 import { NumberStepper } from '@/components/NumberStepper'
 import { useSettings } from '../store'
 import type { ThemePreference } from '../types'
+import { SoundPicker } from './SoundPicker'
 
 function Section({
   icon: Icon,
@@ -223,6 +225,18 @@ export function SettingsPage() {
           checked={settings.systemNotify}
           onChange={(systemNotify) => update({ systemNotify })}
         />
+        <div className="pt-2.5">
+          <span className="flex items-center gap-2 text-sm">
+            <Volume2 className="size-4 text-muted-foreground" aria-hidden />
+            {t('settings.sound')}
+          </span>
+          <span className="block text-xs text-muted-foreground">{t('settings.soundHint')}</span>
+          <SoundPicker
+            label={t('settings.sound')}
+            value={settings.sound}
+            onChange={(sound) => update({ sound })}
+          />
+        </div>
       </Section>
 
       <Section icon={Monitor} title={t('settings.system')}>

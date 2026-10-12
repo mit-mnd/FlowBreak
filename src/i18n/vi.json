@@ -242,6 +242,23 @@
     "popup": "Cửa sổ nhắc ở góc màn hình luôn được bật.",
     "systemNotify": "Kèm thông báo của Windows",
     "systemNotifyHint": "Hiển thị thêm thông báo trong Action Center.",
+    "sound": "Âm thanh nhắc nhở",
+    "soundHint": "Chọn tiếng phát khi cửa sổ nhắc hiện lên.",
+    "soundPreview": "Nghe thử: {{name}}",
+    "sounds": {
+      "off": "Không âm thanh",
+      "drop": "Giọt nước",
+      "bell": "Chuông ngân",
+      "chime": "Chuông gió",
+      "pulse": "Ba tiếng ping"
+    },
+    "soundsHint": {
+      "off": "Chỉ hiện cửa sổ nhắc, không phát tiếng",
+      "drop": "Hai tiếng tách nhẹ, dịu tai",
+      "bell": "Một tiếng chuông ngân trong trẻo",
+      "chime": "Bốn nốt đi lên, tươi sáng",
+      "pulse": "Ba tiếng ngắn, dễ nhận ra nhất"
+    },
     "system": "Hệ thống",
     "autostart": "Khởi động cùng Windows",
     "autostartHint": "Chạy ẩn dưới khay hệ thống khi bật máy.",

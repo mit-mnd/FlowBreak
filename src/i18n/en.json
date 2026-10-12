@@ -242,6 +242,23 @@
     "popup": "The corner reminder popup is always on.",
     "systemNotify": "Also send Windows notifications",
     "systemNotifyHint": "Adds a notification to the Action Center.",
+    "sound": "Reminder sound",
+    "soundHint": "Choose the sound played when the reminder popup appears.",
+    "soundPreview": "Preview: {{name}}",
+    "sounds": {
+      "off": "No sound",
+      "drop": "Water drop",
+      "bell": "Ringing bell",
+      "chime": "Wind chime",
+      "pulse": "Triple ping"
+    },
+    "soundsHint": {
+      "off": "Popup only, no sound",
+      "drop": "Two soft plips, easy on the ears",
+      "bell": "One clear, ringing bell",
+      "chime": "Four rising notes, bright",
+      "pulse": "Three short pings, hardest to miss"
+    },
     "system": "System",
     "autostart": "Start with Windows",
     "autostartHint": "Runs quietly in the system tray at login.",

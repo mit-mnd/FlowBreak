@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Leaf, X } from 'lucide-react'
 import { setLanguage } from '@/i18n'
+import { playReminderSound } from '@/lib/sound'
 import {
   emitAppEvent,
   getReminderPayload,
@@ -27,8 +28,13 @@ export function ReminderPopupApp() {
   const [payload, setPayload] = useState<PopupPayload | null>(null)
 
   useEffect(() => {
-    void getReminderPayload().then((raw) => setPayload(parse(raw)))
-    const off = onAppEvent<string>('reminder-update', (raw) => setPayload(parse(raw)))
+    const receive = (raw: string | null) => {
+      const next = parse(raw)
+      setPayload(next)
+      if (next) void playReminderSound(next.sound)
+    }
+    void getReminderPayload().then(receive)
+    const off = onAppEvent<string>('reminder-update', receive)
     return () => void off.then((u) => u())
   }, [])
 
