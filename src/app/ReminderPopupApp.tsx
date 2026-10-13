@@ -11,6 +11,7 @@ import {
   resizeReminderPopup,
 } from '@/lib/tauri'
 import { ReminderContent, type ReminderActionMessage } from './ReminderContent'
+import { afterAction } from './reminders-store'
 import type { PopupPayload } from './useReminderEngine'
 
 function parse(raw: string | null): PopupPayload | null {
@@ -47,12 +48,12 @@ export function ReminderPopupApp() {
 
   const onAction = (msg: ReminderActionMessage) => {
     void emitAppEvent('main', 'reminder-action', msg)
-    const left = msg.kind === 'all' ? [] : (payload?.kinds ?? []).filter((k) => k !== msg.kind)
-    if (left.length === 0) {
+    const left = payload ? afterAction(payload, msg) : null
+    if (payload && left) {
+      setPayload({ ...payload, ...left })
+    } else {
       void hideReminderPopup()
       setPayload(null)
-    } else if (payload) {
-      setPayload({ ...payload, kinds: left })
     }
   }
 

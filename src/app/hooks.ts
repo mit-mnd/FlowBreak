@@ -1,15 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { ThemePreference } from '@/features/settings'
 
-/** Current timestamp, refreshed every `intervalMs`. */
-export function useNow(intervalMs = 15_000): number {
-  const [now, setNow] = useState(() => Date.now())
-  useEffect(() => {
-    const id = window.setInterval(() => setNow(Date.now()), intervalMs)
-    return () => window.clearInterval(id)
-  }, [intervalMs])
-  return now
-}
+export { useNow } from '@/lib/use-now'
 
 function systemPrefersDark(): boolean {
   return (

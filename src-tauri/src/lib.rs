@@ -21,12 +21,20 @@ fn show_main_window(app: AppHandle) {
 
 fn migrations() -> Vec<Migration> {
     // Never edit an existing migration; append a new one instead.
-    vec![Migration {
-        version: 1,
-        description: "create_initial_tables",
-        sql: include_str!("../../src/lib/db/migrations/0001_init.sql"),
-        kind: MigrationKind::Up,
-    }]
+    vec![
+        Migration {
+            version: 1,
+            description: "create_initial_tables",
+            sql: include_str!("../../src/lib/db/migrations/0001_init.sql"),
+            kind: MigrationKind::Up,
+        },
+        Migration {
+            version: 2,
+            description: "create_appointments",
+            sql: include_str!("../../src/lib/db/migrations/0002_appointments.sql"),
+            kind: MigrationKind::Up,
+        },
+    ]
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

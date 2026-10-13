@@ -6,11 +6,12 @@ Hướng dẫn cho Claude Code khi làm việc trong repo này.
 
 **Tên tạm:** FlowBreak — app desktop giúp người làm việc văn phòng giữ sức khỏe khi ngồi lâu.
 
-Ba tính năng cốt lõi:
+Bốn tính năng cốt lõi:
 
 1. **Nhắc uống nước:** nhắc theo chu kỳ (mặc định 45 phút), theo dõi lượng nước đã uống trong ngày so với mục tiêu (mặc định 2000 ml).
 2. **Nhắc đứng dậy, vận động nhẹ:** sau một khoảng ngồi liên tục (mặc định 50 phút), hiện lời nhắc kèm 1 bài khởi động ngắn (30 giây đến 2 phút) có hướng dẫn từng bước và đồng hồ đếm ngược.
 3. **To-do list:** quản lý công việc trong ngày. Có thể "tạm dừng nhắc nhở" khi đang tập trung vào một task (Focus mode).
+4. **Lịch hẹn:** đặt lịch có tiêu đề, ngày giờ (input date/time), ghi chú và thời điểm nhắc trước (đúng giờ, 5, 10, 15, 30, 60 phút, 1 ngày). Đến hạn thì hiện popup + âm thanh (+ thông báo Windows nếu bật), có "Đã rõ" và "Hoãn 10 phút".
 
 Cách kết hợp: lời nhắc nên rơi vào **khoảng nghỉ tự nhiên**, ví dụ ngay sau khi người dùng đánh dấu hoàn thành một task. Nếu đang ở Focus mode thì hoãn nhắc tối đa 15 phút, rồi nhắc nhẹ.
 
@@ -55,6 +56,7 @@ src/
     movement/       # nhắc vận động, danh sách bài tập, màn hình hướng dẫn
     todos/          # to-do list
     focus/          # Focus mode, liên kết task với lời nhắc
+    schedule/       # lịch hẹn: logic thuần (đến hạn, nhóm theo ngày, validate form), store, trang + form đặt lịch
     stats/          # thống kê 7 ngày (logic thuần + biểu đồ)
     settings/
   components/ui/    # component shadcn/ui (sinh bằng CLI, hạn chế sửa tay)
@@ -79,6 +81,8 @@ Mỗi feature tự chứa phần của mình: `components/`, `store.ts`, `types.
 - **Phát hiện "đang ngồi":** dựa trên thời gian hoạt động của người dùng (idle detection). Nếu idle hơn 5 phút thì coi như đã đứng dậy và reset bộ đếm vận động.
 - **Không làm phiền:** tôn trọng giờ làm việc người dùng cài (mặc định 8:00 đến 18:00), không nhắc ngoài giờ, không nhắc khi máy đang khóa, có nút "Hoãn 10 phút" và "Bỏ qua".
 - **Không dồn nhắc:** nếu hai lời nhắc trùng thời điểm thì gộp lại thành một thông báo.
+- **Lịch hẹn là ngoại lệ của "không làm phiền":** lịch hẹn do người dùng tự đặt nên vẫn nhắc ngoài giờ làm việc, khi đang tạm dừng nhắc hoặc Focus mode. Engine kiểm tra mỗi 15 giây (`checkAppointments`), mỗi lịch chỉ nhắc một lần (`notifiedAt`); lịch đã quá 6 giờ so với giờ bắt đầu thì không nhắc muộn. Đổi giờ hoặc thời điểm nhắc sẽ nhắc lại từ đầu.
+- **Âm thanh:** tổng hợp bằng Web Audio (`lib/sound`), không có file âm thanh. Mỗi tiếng là một "score" gồm các nốt; nốt lớn nhất có gain 1.0 và `MASTER_VOLUME = 0.5`. Thêm tiếng mới phải qua test `sound.test.ts` (không clip).
 - App chạy nền dưới tray; đóng cửa sổ chỉ ẩn xuống tray, không thoát app.
 - Mọi dữ liệu lưu **cục bộ**, không gửi ra ngoài. Không thêm analytics/telemetry.
 - Thay đổi schema DB phải tạo **migration mới**, không sửa migration cũ.
@@ -109,8 +113,8 @@ Mục tiêu: **dễ nhìn, dễ dùng, hiện đại, chuyên nghiệp.** Cảm 
 ### Bố cục
 
 - Cửa sổ chính khoảng 420×720 (dạng panel gọn), có thể resize. Layout không vỡ ở chiều rộng 360px.
-- **Dashboard** là màn hình đầu: vòng tiến độ nước uống, thời gian đến lần vận động kế tiếp, danh sách task hôm nay.
-- Điều hướng: thanh tab dưới hoặc sidebar thu gọn gồm Hôm nay · Công việc · Thống kê · Cài đặt.
+- **Dashboard** là màn hình đầu: vòng tiến độ nước uống, thời gian đến lần vận động kế tiếp, lịch hẹn sắp tới, danh sách task hôm nay.
+- Điều hướng: thanh tab dưới (Ctrl+1..5) gồm Hôm nay · Công việc · Lịch hẹn · Thống kê · Cài đặt.
 - Khoảng cách theo lưới 4px (`gap-2`, `p-4`, `p-6`...).
 
 ### Tương tác

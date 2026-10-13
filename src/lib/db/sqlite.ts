@@ -1,5 +1,5 @@
 import Database from '@tauri-apps/plugin-sql'
-import type { MovementLog, Repos, Todo, WaterLog } from './types'
+import type { Appointment, MovementLog, Repos, Todo, WaterLog } from './types'
 
 // Must match the connection string registered with migrations in src-tauri/src/lib.rs.
 const DB_URL = 'sqlite:flowbreak.db'
@@ -12,6 +12,17 @@ type TodoRow = {
   position: number
   created_at: number
   completed_at: number | null
+}
+type AppointmentRow = {
+  id: string
+  title: string
+  note: string
+  starts_at: number
+  remind_before_min: number
+  done: number
+  notified_at: number | null
+  snoozed_until: number | null
+  created_at: number
 }
 type WaterRow = { id: string; amount_ml: number; logged_at: number }
 type MovementRow = { id: string; exercise_id: string; duration_sec: number; logged_at: number }
@@ -26,10 +37,55 @@ const toTodo = (r: TodoRow): Todo => ({
   completedAt: r.completed_at,
 })
 
+const toAppointment = (r: AppointmentRow): Appointment => ({
+  id: r.id,
+  title: r.title,
+  note: r.note,
+  startsAt: r.starts_at,
+  remindBeforeMin: r.remind_before_min,
+  done: r.done === 1,
+  notifiedAt: r.notified_at,
+  snoozedUntil: r.snoozed_until,
+  createdAt: r.created_at,
+})
+
 export async function createSqliteRepos(): Promise<Repos> {
   const db = await Database.load(DB_URL)
 
   return {
+    appointments: {
+      async list() {
+        const rows = await db.select<AppointmentRow[]>(
+          'SELECT * FROM appointments ORDER BY starts_at ASC',
+        )
+        return rows.map(toAppointment)
+      },
+      async upsert(a) {
+        await db.execute(
+          `INSERT INTO appointments
+             (id, title, note, starts_at, remind_before_min, done, notified_at, snoozed_until, created_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+           ON CONFLICT(id) DO UPDATE SET
+             title = excluded.title, note = excluded.note, starts_at = excluded.starts_at,
+             remind_before_min = excluded.remind_before_min, done = excluded.done,
+             notified_at = excluded.notified_at, snoozed_until = excluded.snoozed_until`,
+          [
+            a.id,
+            a.title,
+            a.note,
+            a.startsAt,
+            a.remindBeforeMin,
+            a.done ? 1 : 0,
+            a.notifiedAt,
+            a.snoozedUntil,
+            a.createdAt,
+          ],
+        )
+      },
+      async remove(id) {
+        await db.execute('DELETE FROM appointments WHERE id = $1', [id])
+      },
+    },
     todos: {
       async list() {
         const rows = await db.select<TodoRow[]>('SELECT * FROM todos ORDER BY position ASC')

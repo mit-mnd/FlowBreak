@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { SettingsPage, useSettings } from '@/features/settings'
 import { useHydration } from '@/features/hydration'
 import { ExerciseSession, useMovement } from '@/features/movement'
+import { SchedulePage, useAppointments } from '@/features/schedule'
 import { TasksPage, useTodos } from '@/features/todos'
 import { useFocus } from '@/features/focus'
 import { StatsPage } from '@/features/stats'
@@ -24,6 +25,7 @@ async function bootstrap(): Promise<void> {
   await useSettings.getState().load()
   await Promise.all([
     useTodos.getState().load(),
+    useAppointments.getState().load(),
     useHydration.getState().load(),
     useMovement.getState().load(),
     useFocus.getState().load(),
@@ -77,6 +79,7 @@ export function App() {
               >
                 {view === 'today' && <TodayPage />}
                 {view === 'tasks' && <TasksPage />}
+                {view === 'schedule' && <SchedulePage />}
                 {view === 'stats' && <StatsPage />}
                 {view === 'settings' && <SettingsPage />}
               </motion.div>

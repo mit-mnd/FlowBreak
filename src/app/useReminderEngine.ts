@@ -18,20 +18,35 @@ import { toSchedulerConfig, useSettings } from '@/features/settings'
 import { isFocusActive, useFocus } from '@/features/focus'
 import { logWater, useHydration } from '@/features/hydration'
 import { pickExercise, useMovement } from '@/features/movement'
+import { dueAppointments, useAppointments, type Appointment } from '@/features/schedule'
 import { useTodos } from '@/features/todos'
 import { useNavigation } from './navigation'
-import { useReminders, type ActiveReminder } from './reminders-store'
+import {
+  useReminders,
+  type ActiveReminder,
+  type ReminderActionMessage,
+  type ReminderAppointment,
+} from './reminders-store'
 import { notificationText } from './reminder-text'
-import type { ReminderActionMessage } from './ReminderContent'
 
 const TICK_MS = 30_000
+/** Appointments are time-critical, so they are checked more often than habit reminders. */
+const APPOINTMENT_TICK_MS = 15_000
+
+const toReminderAppointment = (a: Appointment): ReminderAppointment => ({
+  id: a.id,
+  title: a.title,
+  note: a.note,
+  startsAt: a.startsAt,
+})
 export const WATER_SHORTCUT = 'CommandOrControl+Shift+W'
 
 /** `sound` is 'off' unless the popup is being (re)shown for new reminders. */
 export type PopupPayload = ActiveReminder & { lang: Language; dark: boolean; sound: SoundChoice }
 
-function popupHeight(kinds: number): number {
-  return kinds > 1 ? 236 : 168
+/** Initial height guess; the popup measures itself and resizes right after. */
+function popupHeight(rows: number): number {
+  return 100 + rows * 68
 }
 
 async function syncPopup(
@@ -53,7 +68,7 @@ async function syncPopup(
   }
   await showReminderPopup({
     payload: JSON.stringify(payload),
-    height: popupHeight(current.kinds.length),
+    height: popupHeight(current.kinds.length + current.appointments.length),
   })
 }
 
@@ -70,15 +85,22 @@ export function useReminderEngine(ready: boolean, dark: boolean): void {
     const reminders = useReminders.getState
     let running = false
 
-    const present = async (due: ReminderKind[], gentle: boolean, now: number) => {
+    const present = async (
+      due: ReminderKind[],
+      gentle: boolean,
+      now: number,
+      appointments: ReminderAppointment[] = [],
+    ) => {
       const prev = reminders().current
       const kinds = Array.from(new Set([...(prev?.kinds ?? []), ...due]))
+      const shown = prev?.appointments ?? []
       const current: ActiveReminder = {
         kinds: (['water', 'movement'] as const).filter((k) => kinds.includes(k)),
-        gentle,
+        gentle: due.length > 0 ? gentle : (prev?.gentle ?? false),
         exerciseId:
           prev?.exerciseId ?? pickExercise(useMovement.getState().logs.map((l) => l.exerciseId)).id,
         sittingMin: minutesBetween(reminders().state.sittingSince, now),
+        appointments: [...shown, ...appointments.filter((a) => !shown.some((s) => s.id === a.id))],
       }
       reminders().setCurrent(current)
       await syncPopup(current, darkRef.current, true).catch((err) =>
@@ -87,9 +109,21 @@ export function useReminderEngine(ready: boolean, dark: boolean): void {
       // In Tauri the popup window plays its own chime; here covers the browser dialog.
       if (!isTauri()) void playReminderSound(useSettings.getState().settings.sound)
       if (useSettings.getState().settings.systemNotify) {
-        const { title, body } = notificationText(current, i18n.t)
+        const { title, body } = notificationText(current, i18n.t, i18n.language)
         await sendSystemNotification(title, body)
       }
+    }
+
+    /** Notify for appointments whose reminder time has come. Ignores work hours and pauses. */
+    const checkAppointments = async () => {
+      const now = Date.now()
+      const due = dueAppointments(useAppointments.getState().items, now)
+      if (due.length === 0) return
+      useAppointments.getState().markNotified(
+        due.map((a) => a.id),
+        now,
+      )
+      await present([], false, now, due.map(toReminderAppointment))
     }
 
     const run = async (naturalBreak = false) => {
@@ -118,6 +152,22 @@ export function useReminderEngine(ready: boolean, dark: boolean): void {
 
     const handleAction = (msg: ReminderActionMessage, fromPopup: boolean) => {
       const current = reminders().current
+
+      if (msg.kind === 'appointment') {
+        if (msg.action === 'snooze') useAppointments.getState().snooze([msg.id])
+        reminders().dismissAppointment(msg.id)
+        if (!fromPopup) void syncPopup(reminders().current, darkRef.current)
+        return
+      }
+
+      // "Snooze" / "Skip" on the whole popup also covers the appointments in it.
+      if (msg.kind === 'all' && current && current.appointments.length > 0) {
+        if (msg.action === 'snooze') {
+          useAppointments.getState().snooze(current.appointments.map((a) => a.id))
+        }
+        reminders().dismissAppointments()
+      }
+
       const kinds: ReminderKind[] = msg.kind === 'all' ? (current?.kinds ?? []) : [msg.kind]
       for (const kind of kinds) {
         if (msg.action === 'done' && kind === 'water') {
@@ -171,6 +221,18 @@ export function useReminderEngine(ready: boolean, dark: boolean): void {
       useFocus.subscribe((s, prev) => {
         if (prev.session && !s.session) void run(true)
       }),
+      // An appointment finished or deleted in the app disappears from the open popup too.
+      useAppointments.subscribe((s) => {
+        const cur = reminders().current
+        if (!cur || cur.appointments.length === 0) return
+        const gone = cur.appointments.filter((a) => {
+          const live = s.items.find((i) => i.id === a.id)
+          return !live || live.done
+        })
+        if (gone.length === 0) return
+        gone.forEach((a) => reminders().dismissAppointment(a.id))
+        void syncPopup(reminders().current, darkRef.current)
+      }),
     )
 
     // Events from the popup window, tray and global shortcut ------------------------
@@ -188,11 +250,14 @@ export function useReminderEngine(ready: boolean, dark: boolean): void {
     )
 
     void run()
+    void checkAppointments()
     const id = window.setInterval(() => void run(), TICK_MS)
+    const appointmentId = window.setInterval(() => void checkAppointments(), APPOINTMENT_TICK_MS)
 
     return () => {
       disposed = true
       window.clearInterval(id)
+      window.clearInterval(appointmentId)
       unsubs.forEach((u) => u())
     }
   }, [ready])

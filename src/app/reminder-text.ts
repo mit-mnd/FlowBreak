@@ -1,7 +1,7 @@
 import type { TFunction } from 'i18next'
 import type { ReminderKind } from '@/lib/scheduler'
 import { getExercise } from '@/features/movement'
-import type { ActiveReminder } from './reminders-store'
+import type { ActiveReminder, ReminderAppointment } from './reminders-store'
 
 export function reminderLine(kind: ReminderKind, r: ActiveReminder, t: TFunction) {
   if (kind === 'water') {
@@ -27,9 +27,23 @@ export function reminderLine(kind: ReminderKind, r: ActiveReminder, t: TFunction
   }
 }
 
-/** Title/body for a single OS notification that groups all due reminders. */
-export function notificationText(r: ActiveReminder, t: TFunction) {
-  const lines = r.kinds.map((k) => reminderLine(k, r, t))
+export function appointmentLine(a: ReminderAppointment, t: TFunction, locale: string) {
+  const time = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(
+    a.startsAt,
+  )
+  const at = t('reminders.appointment.body', { time })
+  return { title: a.title, body: a.note ? `${at} · ${a.note}` : at }
+}
+
+/** Title/body for a single OS notification that groups everything that is due. */
+export function notificationText(r: ActiveReminder, t: TFunction, locale: string) {
+  const lines = [
+    ...r.kinds.map((k) => reminderLine(k, r, t)),
+    ...r.appointments.map((a) => {
+      const line = appointmentLine(a, t, locale)
+      return { title: t('reminders.appointment.notifyTitle', { title: a.title }), body: line.body }
+    }),
+  ]
   if (lines.length === 1 && lines[0]) return lines[0]
   return { title: t('reminders.combinedTitle'), body: lines.map((l) => l.title).join(' · ') }
 }

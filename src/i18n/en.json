@@ -3,6 +3,7 @@
   "nav": {
     "today": "Today",
     "tasks": "Tasks",
+    "schedule": "Schedule",
     "stats": "Stats",
     "settings": "Settings",
     "label": "Main navigation"
@@ -165,6 +166,55 @@
     "reorderHint": "Drag or Alt+↑/↓ to reorder, double-click to edit.",
     "completedToast": "Completed “{{title}}” ✓"
   },
+  "schedule": {
+    "title": "Schedule",
+    "add": "Add appointment",
+    "addShort": "Add",
+    "edit": "Edit appointment",
+    "formHint": "Enter a title, pick a date and time, and choose when to be reminded.",
+    "upcoming": "Upcoming",
+    "upcomingEmpty": "No upcoming appointments.",
+    "viewAll": "View all",
+    "pending": "{{count}} pending",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "overdue": "Past, not done",
+    "allClear": "Nothing coming up ✨",
+    "doneSection": "Done ({{count}})",
+    "emptyTitle": "No appointments yet",
+    "emptyBody": "Schedule meetings, appointments or tasks for a set time, and FlowBreak will remind you.",
+    "emptyAction": "Schedule your first one",
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "e.g. Team sync, dentist…",
+      "date": "Date",
+      "time": "Time",
+      "quickToday": "Today",
+      "quickTomorrow": "Tomorrow",
+      "quickNextWeek": "Next week",
+      "remind": "Remind me",
+      "note": "Note (optional)",
+      "create": "Schedule",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "errors": {
+      "title": "Please enter a title.",
+      "datetime": "The date or time is not valid.",
+      "past": "That time has already passed. Pick a time in the future."
+    },
+    "remindAt": "At the time",
+    "remindMin": "{{count}} min before",
+    "remindHour": "1 hour before",
+    "remindDay": "1 day before",
+    "markDone": "Mark as done: {{title}}",
+    "markUndone": "Mark as not done: {{title}}",
+    "editAria": "Edit appointment: {{title}}",
+    "deleteAria": "Delete appointment: {{title}}",
+    "deleted": "Deleted “{{title}}”",
+    "saved": "Appointment saved ✓",
+    "created": "Scheduled “{{title}}” 📅"
+  },
   "focus": {
     "active": "Focusing",
     "general": "Focus session",
@@ -188,6 +238,11 @@
       "gentle": "Once this task is done, stand up and stretch a little."
     },
     "combinedTitle": "Time for a short break",
+    "appointment": {
+      "notifyTitle": "Appointment: {{title}}",
+      "body": "At {{time}}",
+      "gotIt": "Got it"
+    },
     "drank": "Drank",
     "start": "Start",
     "snooze": "Snooze 10 min",

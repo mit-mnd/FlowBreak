@@ -3,6 +3,7 @@
   "nav": {
     "today": "Hôm nay",
     "tasks": "Công việc",
+    "schedule": "Lịch hẹn",
     "stats": "Thống kê",
     "settings": "Cài đặt",
     "label": "Điều hướng chính"
@@ -165,6 +166,55 @@
     "reorderHint": "Kéo thả hoặc Alt+↑/↓ để sắp xếp, nhấp đúp để sửa.",
     "completedToast": "Hoàn thành “{{title}}” ✓"
   },
+  "schedule": {
+    "title": "Lịch hẹn",
+    "add": "Thêm lịch hẹn",
+    "addShort": "Thêm",
+    "edit": "Sửa lịch hẹn",
+    "formHint": "Nhập tiêu đề, chọn ngày giờ và thời điểm nhắc.",
+    "upcoming": "Lịch hẹn sắp tới",
+    "upcomingEmpty": "Chưa có lịch hẹn nào sắp tới.",
+    "viewAll": "Xem tất cả",
+    "pending": "{{count}} lịch hẹn chưa xong",
+    "today": "Hôm nay",
+    "tomorrow": "Ngày mai",
+    "overdue": "Đã qua, chưa xong",
+    "allClear": "Không còn lịch hẹn nào sắp tới ✨",
+    "doneSection": "Đã xong ({{count}})",
+    "emptyTitle": "Chưa có lịch hẹn",
+    "emptyBody": "Đặt lịch cho cuộc họp, buổi hẹn hay việc cần làm đúng giờ. FlowBreak sẽ nhắc bạn.",
+    "emptyAction": "Đặt lịch hẹn đầu tiên",
+    "form": {
+      "title": "Tiêu đề",
+      "titlePlaceholder": "Ví dụ: Họp nhóm, khám răng…",
+      "date": "Ngày",
+      "time": "Giờ",
+      "quickToday": "Hôm nay",
+      "quickTomorrow": "Ngày mai",
+      "quickNextWeek": "Tuần sau",
+      "remind": "Nhắc trước",
+      "note": "Ghi chú (không bắt buộc)",
+      "create": "Đặt lịch",
+      "save": "Lưu",
+      "cancel": "Hủy"
+    },
+    "errors": {
+      "title": "Hãy nhập tiêu đề cho lịch hẹn.",
+      "datetime": "Ngày hoặc giờ chưa hợp lệ.",
+      "past": "Thời điểm này đã qua, hãy chọn thời điểm trong tương lai."
+    },
+    "remindAt": "Đúng giờ",
+    "remindMin": "Trước {{count}} phút",
+    "remindHour": "Trước 1 giờ",
+    "remindDay": "Trước 1 ngày",
+    "markDone": "Đánh dấu đã xong: {{title}}",
+    "markUndone": "Đánh dấu chưa xong: {{title}}",
+    "editAria": "Sửa lịch hẹn: {{title}}",
+    "deleteAria": "Xóa lịch hẹn: {{title}}",
+    "deleted": "Đã xóa “{{title}}”",
+    "saved": "Đã lưu lịch hẹn ✓",
+    "created": "Đã đặt lịch “{{title}}” 📅"
+  },
   "focus": {
     "active": "Đang tập trung",
     "general": "Phiên tập trung",
@@ -188,6 +238,11 @@
       "gentle": "Xong việc này thì đứng dậy giãn người một chút nhé."
     },
     "combinedTitle": "Đến giờ nghỉ một chút",
+    "appointment": {
+      "notifyTitle": "Lịch hẹn: {{title}}",
+      "body": "Lúc {{time}}",
+      "gotIt": "Đã rõ"
+    },
     "drank": "Đã uống",
     "start": "Bắt đầu tập",
     "snooze": "Hoãn 10 phút",

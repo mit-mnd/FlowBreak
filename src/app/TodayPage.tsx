@@ -7,6 +7,7 @@ import { MINUTE } from '@/lib/time'
 import { toSchedulerConfig, useSettings } from '@/features/settings'
 import { HydrationCard } from '@/features/hydration'
 import { MovementCard } from '@/features/movement'
+import { UpcomingCard } from '@/features/schedule'
 import { TodayTasksCard } from '@/features/todos'
 import { FocusBanner, StartFocusDialog, useFocus } from '@/features/focus'
 import { useNow } from './hooks'
@@ -95,6 +96,7 @@ export function TodayPage() {
       ) : null}
 
       <FocusBanner />
+      <UpcomingCard now={now} onViewAll={() => setView('schedule')} />
       <HydrationCard now={now} nextInMin={nextIn('water')} />
       <MovementCard now={now} sittingSince={state.sittingSince} nextInMin={nextIn('movement')} />
       <TodayTasksCard onViewAll={() => setView('tasks')} />

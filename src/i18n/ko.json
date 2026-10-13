@@ -3,6 +3,7 @@
   "nav": {
     "today": "오늘",
     "tasks": "할 일",
+    "schedule": "일정",
     "stats": "통계",
     "settings": "설정",
     "label": "주요 메뉴"
@@ -162,6 +163,55 @@
     "reorderHint": "끌거나 Alt+↑/↓로 순서 변경, 두 번 클릭해 수정.",
     "completedToast": "“{{title}}” 완료 ✓"
   },
+  "schedule": {
+    "title": "일정",
+    "add": "일정 추가",
+    "addShort": "추가",
+    "edit": "일정 수정",
+    "formHint": "제목을 입력하고 날짜와 시간, 알림 시점을 고르세요.",
+    "upcoming": "다가오는 일정",
+    "upcomingEmpty": "다가오는 일정이 없어요.",
+    "viewAll": "모두 보기",
+    "pending": "남은 일정 {{count}}개",
+    "today": "오늘",
+    "tomorrow": "내일",
+    "overdue": "지났지만 완료하지 않음",
+    "allClear": "다가오는 일정이 없어요 ✨",
+    "doneSection": "완료 ({{count}})",
+    "emptyTitle": "아직 일정이 없어요",
+    "emptyBody": "회의, 약속, 할 일을 정해진 시간에 맞춰 등록하면 FlowBreak가 알려 드려요.",
+    "emptyAction": "첫 일정 등록하기",
+    "form": {
+      "title": "제목",
+      "titlePlaceholder": "예: 팀 회의, 치과…",
+      "date": "날짜",
+      "time": "시간",
+      "quickToday": "오늘",
+      "quickTomorrow": "내일",
+      "quickNextWeek": "다음 주",
+      "remind": "미리 알림",
+      "note": "메모 (선택)",
+      "create": "일정 등록",
+      "save": "저장",
+      "cancel": "취소"
+    },
+    "errors": {
+      "title": "제목을 입력해 주세요.",
+      "datetime": "날짜 또는 시간이 올바르지 않아요.",
+      "past": "이미 지난 시간이에요. 앞으로의 시간을 선택해 주세요."
+    },
+    "remindAt": "정시에",
+    "remindMin": "{{count}}분 전",
+    "remindHour": "1시간 전",
+    "remindDay": "1일 전",
+    "markDone": "완료로 표시: {{title}}",
+    "markUndone": "미완료로 표시: {{title}}",
+    "editAria": "일정 수정: {{title}}",
+    "deleteAria": "일정 삭제: {{title}}",
+    "deleted": "“{{title}}” 삭제됨",
+    "saved": "일정을 저장했어요 ✓",
+    "created": "“{{title}}” 일정을 등록했어요 📅"
+  },
   "focus": {
     "active": "집중 중",
     "general": "집중 세션",
@@ -185,6 +235,11 @@
       "gentle": "이 일을 마치면 일어나서 몸을 좀 풀어요."
     },
     "combinedTitle": "잠깐 쉬어 갈 시간",
+    "appointment": {
+      "notifyTitle": "일정: {{title}}",
+      "body": "{{time}}에",
+      "gotIt": "확인"
+    },
     "drank": "마셨어요",
     "start": "시작",
     "snooze": "10분 뒤에",

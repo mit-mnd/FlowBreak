@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { BarChart3, House, ListChecks, Settings } from 'lucide-react'
+import { BarChart3, CalendarDays, House, ListChecks, Settings } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useNavigation, VIEWS, type View } from './navigation'
@@ -8,6 +8,7 @@ import { useNavigation, VIEWS, type View } from './navigation'
 const ICONS: Record<View, LucideIcon> = {
   today: House,
   tasks: ListChecks,
+  schedule: CalendarDays,
   stats: BarChart3,
   settings: Settings,
 }
@@ -17,7 +18,7 @@ export function BottomNav() {
   const view = useNavigation((s) => s.view)
   const setView = useNavigation((s) => s.setView)
 
-  // Ctrl+1..4 switches tabs.
+  // Ctrl+1..5 switches tabs.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!e.ctrlKey || e.shiftKey || e.altKey) return
