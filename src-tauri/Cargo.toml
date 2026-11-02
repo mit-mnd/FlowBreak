@@ -1,6 +1,6 @@
 [package]
 name = "flowbreak"
-version = "0.1.0"
+version = "0.2.0"
 description = "FlowBreak - hydration, movement breaks and tasks"
 authors = ["FlowBreak"]
 edition = "2021"
