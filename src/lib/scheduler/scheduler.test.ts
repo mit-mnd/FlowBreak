@@ -17,6 +17,7 @@ const config: SchedulerConfig = {
   water: { enabled: true, intervalMin: 45 },
   movement: { enabled: true, intervalMin: 50 },
   workHours: { start: '08:00', end: '18:00', days: [1, 2, 3, 4, 5] },
+  remindWaterAfterGoal: false,
   idleResetMin: 5,
   focusMaxDelayMin: 15,
   renotifyMin: 15,
@@ -94,6 +95,27 @@ describe('tick', () => {
     const brk = (now: number) => ({ now, idleSec: 0, focusActive: false, naturalBreak: true })
     expect(tick(brk(at(9, 30)), s, config).due).toEqual([])
     expect(tick(brk(at(9, 36)), s, config).due).toEqual(['water'])
+  })
+
+  it('stops water reminders once the daily goal is reached, but not movement', () => {
+    const s = createInitialState(at(9))
+    const done = { ...active(at(9, 50)), waterGoalReached: true }
+    expect(tick(done, s, config).due).toEqual(['movement'])
+  })
+
+  it('keeps reminding about water after the goal when opted in', () => {
+    const s = createInitialState(at(9))
+    const done = { ...active(at(9, 50)), waterGoalReached: true }
+    const optIn = { ...config, remindWaterAfterGoal: true }
+    expect(tick(done, s, optIn).due).toEqual(['water', 'movement'])
+  })
+
+  it('uses the configured idle threshold', () => {
+    const s = createInitialState(at(9))
+    const relaxed = { ...config, idleResetMin: 15 }
+    const input = { now: at(10), idleSec: 6 * 60, focusActive: false }
+    expect(tick(input, s, relaxed).away).toBe(false)
+    expect(tick({ ...input, idleSec: 15 * 60 }, s, relaxed).away).toBe(true)
   })
 
   it('skips disabled kinds', () => {

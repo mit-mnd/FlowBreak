@@ -14,6 +14,8 @@ export type SchedulerConfig = {
   water: { enabled: boolean; intervalMin: number }
   movement: { enabled: boolean; intervalMin: number }
   workHours: WorkHours
+  /** Keep reminding to drink after the daily goal is reached. */
+  remindWaterAfterGoal: boolean
   /** Idle this long counts as "stood up / away": sitting timer resets, no reminders. */
   idleResetMin: number
   /** During focus mode a due reminder waits at most this long. */
@@ -38,6 +40,8 @@ export type TickInput = {
   idleSec: number
   focusActive: boolean
   naturalBreak?: boolean
+  /** Today's water total already meets the daily goal. */
+  waterGoalReached?: boolean
 }
 
 export type TickResult = {

@@ -11,8 +11,11 @@ export type Settings = {
   waterGoalMl: number
   cupMl: number
   waterIntervalMin: number
+  remindAfterGoal: boolean
   movementEnabled: boolean
   movementIntervalMin: number
+  /** Idle this long counts as having stood up, which resets the sitting timer. */
+  idleResetMin: number
   workStart: string
   workEnd: string
   workDays: number[]
@@ -28,8 +31,10 @@ export const DEFAULT_SETTINGS: Settings = {
   waterGoalMl: 2000,
   cupMl: 250,
   waterIntervalMin: 45,
+  remindAfterGoal: false,
   movementEnabled: true,
   movementIntervalMin: 50,
+  idleResetMin: 5,
   workStart: '08:00',
   workEnd: '18:00',
   workDays: [1, 2, 3, 4, 5],
@@ -43,7 +48,8 @@ export function toSchedulerConfig(s: Settings): SchedulerConfig {
     water: { enabled: s.waterEnabled, intervalMin: s.waterIntervalMin },
     movement: { enabled: s.movementEnabled, intervalMin: s.movementIntervalMin },
     workHours: { start: s.workStart, end: s.workEnd, days: s.workDays },
-    idleResetMin: 5,
+    remindWaterAfterGoal: s.remindAfterGoal,
+    idleResetMin: s.idleResetMin,
     focusMaxDelayMin: 15,
     renotifyMin: 15,
     naturalBreakWindowMin: 10,

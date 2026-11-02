@@ -16,7 +16,7 @@ import { sendSystemNotification } from '@/lib/notifications'
 import { playReminderSound, type SoundChoice } from '@/lib/sound'
 import { toSchedulerConfig, useSettings } from '@/features/settings'
 import { isFocusActive, useFocus } from '@/features/focus'
-import { logWater, useHydration } from '@/features/hydration'
+import { logWater, totalForDay, useHydration } from '@/features/hydration'
 import { pickExercise, useMovement } from '@/features/movement'
 import { dueAppointments, useAppointments, type Appointment } from '@/features/schedule'
 import { useTodos } from '@/features/todos'
@@ -134,7 +134,13 @@ export function useReminderEngine(ready: boolean, dark: boolean): void {
         const now = Date.now()
         const config = toSchedulerConfig(useSettings.getState().settings)
         const focusActive = isFocusActive(useFocus.getState().session, now)
-        const result = tick({ now, idleSec, focusActive, naturalBreak }, reminders().state, config)
+        const { waterGoalMl } = useSettings.getState().settings
+        const waterGoalReached = totalForDay(useHydration.getState().logs, now) >= waterGoalMl
+        const result = tick(
+          { now, idleSec, focusActive, naturalBreak, waterGoalReached },
+          reminders().state,
+          config,
+        )
         reminders().setState(result.state)
         reminders().setAway(result.away)
         if (result.due.length > 0) await present(result.due, result.gentle, now)

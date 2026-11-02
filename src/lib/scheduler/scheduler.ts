@@ -78,7 +78,7 @@ export function nextReminderAt(
 }
 
 export function tick(input: TickInput, state: SchedulerState, config: SchedulerConfig): TickResult {
-  const { now, idleSec, focusActive, naturalBreak = false } = input
+  const { now, idleSec, focusActive, naturalBreak = false, waterGoalReached = false } = input
 
   // Away (idle or screen locked): the user is not sitting, so reset the sitting timer.
   if (idleSec >= config.idleResetMin * 60) {
@@ -93,6 +93,7 @@ export function tick(input: TickInput, state: SchedulerState, config: SchedulerC
 
   for (const kind of REMINDER_KINDS) {
     if (!config[kind].enabled) continue
+    if (kind === 'water' && waterGoalReached && !config.remindWaterAfterGoal) continue
     const base = baseDueAt(kind, state, config, now)
     const snooze = state.snoozedUntil[kind]
     let target = Math.max(base, snooze)

@@ -145,6 +145,12 @@ export function SettingsPage() {
           step={5}
           onChange={(waterIntervalMin) => update({ waterIntervalMin })}
         />
+        <ToggleRow
+          label={t('settings.remindAfterGoal')}
+          hint={t('settings.remindAfterGoalHint')}
+          checked={settings.remindAfterGoal}
+          onChange={(remindAfterGoal) => update({ remindAfterGoal })}
+        />
       </Section>
 
       <Section icon={PersonStanding} title={t('settings.movement')}>
@@ -161,6 +167,15 @@ export function SettingsPage() {
           step={5}
           onChange={(movementIntervalMin) => update({ movementIntervalMin })}
         />
+        <NumberStepper
+          label={t('settings.idleReset')}
+          value={settings.idleResetMin}
+          min={3}
+          max={30}
+          step={1}
+          onChange={(idleResetMin) => update({ idleResetMin })}
+        />
+        <p className="py-2 text-xs text-muted-foreground">{t('settings.idleResetHint')}</p>
       </Section>
 
       <Section icon={Clock} title={t('settings.schedule')}>
