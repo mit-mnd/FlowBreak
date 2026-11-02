@@ -1,4 +1,6 @@
 import { DAY, HOUR, MINUTE, dayKey, startOfDay } from '@/lib/time'
+import type { RepeatRule } from '@/lib/db'
+import { untilFromInput } from './recurrence'
 import type { Appointment } from './types'
 
 /** "Notify me N minutes before" choices, in minutes. */
@@ -13,6 +15,9 @@ export type AppointmentDraft = {
   note: string
   startsAt: number
   remindBeforeMin: number
+  repeat?: RepeatRule
+  /** Last moment an occurrence may start; null/undefined = forever. */
+  repeatUntil?: number | null
 }
 
 /** When the reminder for `a` first becomes due. */
@@ -149,14 +154,14 @@ export function defaultStart(now: number): number {
   return d.getTime()
 }
 
-export type FormError = 'title' | 'datetime' | 'past'
+export type FormError = 'title' | 'datetime' | 'past' | 'until'
 
 /**
  * Validate the appointment form. A start in the past is rejected, except when
  * editing an appointment and leaving its start time unchanged.
  */
 export function validateForm(
-  input: { title: string; date: string; time: string },
+  input: { title: string; date: string; time: string; until?: string },
   now: number,
   originalStartsAt?: number,
 ): FormError | null {
@@ -164,5 +169,10 @@ export function validateForm(
   const ts = fromInputs(input.date, input.time)
   if (ts === null) return 'datetime'
   if (ts <= now && ts !== originalStartsAt) return 'past'
+  if (input.until) {
+    // The end date must be a real date and not before the first occurrence's day.
+    const until = untilFromInput(input.until)
+    if (until === null || until < ts) return 'until'
+  }
   return null
 }

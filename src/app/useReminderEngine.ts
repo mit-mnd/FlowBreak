@@ -127,15 +127,20 @@ export function useReminderEngine(ready: boolean, dark: boolean): void {
       const items = useAppointments.getState().items
       const due = dueAppointments(items, now)
       const missed = missedAppointments(items, now)
-      if (due.length === 0 && missed.length === 0) return
-      useAppointments.getState().markNotified(
-        [...due, ...missed].map((a) => a.id),
-        now,
-      )
-      await present([], false, now, [
-        ...missed.map((a) => ({ ...toReminderAppointment(a), missed: true })),
-        ...due.map(toReminderAppointment),
-      ])
+      if (due.length > 0 || missed.length > 0) {
+        useAppointments.getState().markNotified(
+          [...due, ...missed].map((a) => a.id),
+          now,
+        )
+        await present([], false, now, [
+          ...missed.map((a) => ({ ...toReminderAppointment(a), missed: true })),
+          ...due.map(toReminderAppointment),
+        ])
+      }
+      // Recurring appointments that were handled move on to their next occurrence. Ones still
+      // on screen wait, so "snooze" keeps applying to the occurrence being shown.
+      const held = new Set((reminders().current?.appointments ?? []).map((a) => a.id))
+      useAppointments.getState().roll(now, held)
     }
 
     const run = async (naturalBreak = false) => {

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
+import type { RepeatRule } from '@/lib/db'
 import { daysAgo } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import {
@@ -18,6 +19,7 @@ import {
   validateForm,
   type FormError,
 } from '../logic'
+import { REPEAT_RULES, untilFromInput } from '../recurrence'
 import { useAppointments } from '../store'
 import type { Appointment } from '../types'
 import { useScheduleFormat } from '../useScheduleFormat'
@@ -70,10 +72,22 @@ function AppointmentForm({
   const [date, setDate] = useState(() => toDateInput(initial))
   const [time, setTime] = useState(() => toTimeInput(initial))
   const [remind, setRemind] = useState(appointment?.remindBeforeMin ?? DEFAULT_REMIND_MIN)
+  const [repeat, setRepeat] = useState<RepeatRule>(appointment?.repeat ?? 'none')
+  const [until, setUntil] = useState(() =>
+    appointment?.repeatUntil != null ? toDateInput(appointment.repeatUntil) : '',
+  )
   const [error, setError] = useState<FormError | null>(null)
 
   const titleRef = useRef<HTMLInputElement>(null)
-  const ids = { title: useId(), date: useId(), time: useId(), remind: useId(), note: useId() }
+  const ids = {
+    title: useId(),
+    date: useId(),
+    time: useId(),
+    remind: useId(),
+    note: useId(),
+    repeat: useId(),
+    until: useId(),
+  }
 
   const quickDate = (offsetDays: number) => {
     setDate(toDateInput(daysAgo(Date.now(), -offsetDays)))
@@ -82,18 +96,30 @@ function AppointmentForm({
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
-    const problem = validateForm({ title, date, time }, Date.now(), appointment?.startsAt)
+    const problem = validateForm(
+      { title, date, time, until: repeat === 'none' ? '' : until },
+      Date.now(),
+      appointment?.startsAt,
+    )
     setError(problem)
     if (problem) {
       if (problem === 'title') titleRef.current?.focus()
       return
     }
     const startsAt = fromInputs(date, time) as number // validated above
+    const repeatUntil = repeat !== 'none' && until ? untilFromInput(until) : null
     if (appointment) {
-      update(appointment.id, { title, note, startsAt, remindBeforeMin: remind })
+      update(appointment.id, {
+        title,
+        note,
+        startsAt,
+        remindBeforeMin: remind,
+        repeat,
+        repeatUntil,
+      })
       toast.success(t('schedule.saved'))
     } else {
-      const created = add({ title, note, startsAt, remindBeforeMin: remind })
+      const created = add({ title, note, startsAt, remindBeforeMin: remind, repeat, repeatUntil })
       if (created) toast.success(t('schedule.created', { title: created.title }))
     }
     onDone()
@@ -104,7 +130,8 @@ function AppointmentForm({
     const ts = fromInputs(date, time)
     if (ts === null) return null
     const lead = fmt.remindLabel(remind)
-    return `${fmt.dayLabel(new Date(ts).setHours(0, 0, 0, 0), Date.now())} · ${fmt.time(ts)} · ${lead}`
+    const base = `${fmt.dayLabel(new Date(ts).setHours(0, 0, 0, 0), Date.now())} · ${fmt.time(ts)} · ${lead}`
+    return repeat === 'none' ? base : `${base} · ${t(`schedule.repeatOptions.${repeat}`)}`
   })()
 
   return (
@@ -198,6 +225,49 @@ function AppointmentForm({
           ))}
         </Select>
       </div>
+
+      <div className="space-y-1.5">
+        <label htmlFor={ids.repeat} className="text-sm font-medium">
+          {t('schedule.form.repeat')}
+        </label>
+        <Select
+          id={ids.repeat}
+          value={repeat}
+          onChange={(e) => {
+            setRepeat(e.target.value as RepeatRule)
+            if (error === 'until') setError(null)
+          }}
+        >
+          {REPEAT_RULES.map((r) => (
+            <option key={r} value={r}>
+              {t(`schedule.repeatOptions.${r}`)}
+            </option>
+          ))}
+        </Select>
+      </div>
+
+      {repeat !== 'none' && (
+        <div className="space-y-1.5">
+          <label htmlFor={ids.until} className="text-sm font-medium">
+            {t('schedule.form.repeatUntil')}
+          </label>
+          <Input
+            id={ids.until}
+            type="date"
+            value={until}
+            aria-invalid={error === 'until'}
+            aria-describedby={`${ids.until}-hint`}
+            onChange={(e) => {
+              setUntil(e.target.value)
+              if (error === 'until') setError(null)
+            }}
+            className="tabular-nums"
+          />
+          <p id={`${ids.until}-hint`} className="text-xs text-muted-foreground">
+            {t('schedule.form.repeatUntilHint')}
+          </p>
+        </div>
+      )}
 
       <div className="space-y-1.5">
         <label htmlFor={ids.note} className="text-sm font-medium">

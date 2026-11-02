@@ -192,6 +192,9 @@
       "quickTomorrow": "내일",
       "quickNextWeek": "다음 주",
       "remind": "미리 알림",
+      "repeat": "반복",
+      "repeatUntil": "반복 종료일 (선택)",
+      "repeatUntilHint": "비워 두면 계속 반복돼요.",
       "note": "메모 (선택)",
       "create": "일정 등록",
       "save": "저장",
@@ -200,8 +203,17 @@
     "errors": {
       "title": "제목을 입력해 주세요.",
       "datetime": "날짜 또는 시간이 올바르지 않아요.",
-      "past": "이미 지난 시간이에요. 앞으로의 시간을 선택해 주세요."
+      "past": "이미 지난 시간이에요. 앞으로의 시간을 선택해 주세요.",
+      "until": "종료일은 시작일과 같거나 이후여야 해요."
     },
+    "repeatOptions": {
+      "none": "반복 안 함",
+      "daily": "매일",
+      "weekdays": "월요일부터 금요일",
+      "weekly": "매주",
+      "monthly": "매월"
+    },
+    "nextOccurrence": "“{{title}}” 완료. 다음 일정: {{when}}",
     "remindAt": "정시에",
     "remindMin": "{{count}}분 전",
     "remindHour": "1시간 전",

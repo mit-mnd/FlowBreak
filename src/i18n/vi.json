@@ -195,6 +195,9 @@
       "quickTomorrow": "Ngày mai",
       "quickNextWeek": "Tuần sau",
       "remind": "Nhắc trước",
+      "repeat": "Lặp lại",
+      "repeatUntil": "Lặp đến ngày (không bắt buộc)",
+      "repeatUntilHint": "Để trống nếu muốn lặp mãi.",
       "note": "Ghi chú (không bắt buộc)",
       "create": "Đặt lịch",
       "save": "Lưu",
@@ -203,8 +206,17 @@
     "errors": {
       "title": "Hãy nhập tiêu đề cho lịch hẹn.",
       "datetime": "Ngày hoặc giờ chưa hợp lệ.",
-      "past": "Thời điểm này đã qua, hãy chọn thời điểm trong tương lai."
+      "past": "Thời điểm này đã qua, hãy chọn thời điểm trong tương lai.",
+      "until": "Ngày kết thúc phải từ ngày bắt đầu trở đi."
     },
+    "repeatOptions": {
+      "none": "Không lặp",
+      "daily": "Hằng ngày",
+      "weekdays": "Thứ 2 đến Thứ 6",
+      "weekly": "Hằng tuần",
+      "monthly": "Hằng tháng"
+    },
+    "nextOccurrence": "Xong “{{title}}”. Lần kế tiếp: {{when}}",
     "remindAt": "Đúng giờ",
     "remindMin": "Trước {{count}} phút",
     "remindHour": "Trước 1 giờ",

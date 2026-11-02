@@ -70,7 +70,17 @@ export function createMemoryRepos(prefix = 'flowbreak'): Repos {
       upsert: async (e) => events.put(e),
     },
     appointments: {
-      list: async () => appointments.all().sort((a, b) => a.startsAt - b.startsAt),
+      // Rows saved before recurrence existed lack these fields.
+      list: async () =>
+        appointments
+          .all()
+          .map((a) => ({
+            ...a,
+            repeat: a.repeat ?? 'none',
+            repeatUntil: a.repeatUntil ?? null,
+            seriesStart: a.seriesStart ?? null,
+          }))
+          .sort((a, b) => a.startsAt - b.startsAt),
       upsert: async (a) => appointments.put(a),
       remove: async (id) => appointments.remove(id),
     },

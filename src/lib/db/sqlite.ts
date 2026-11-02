@@ -5,6 +5,7 @@ import type {
   MovementLog,
   ReminderEvent,
   ReminderOutcome,
+  RepeatRule,
   Repos,
   Todo,
   WaterLog,
@@ -31,6 +32,9 @@ type AppointmentRow = {
   done: number
   notified_at: number | null
   snoozed_until: number | null
+  repeat: string
+  repeat_until: number | null
+  series_start: number | null
   created_at: number
 }
 type EventRow = {
@@ -62,6 +66,9 @@ const toTodo = (r: TodoRow): Todo => ({
   completedAt: r.completed_at,
 })
 
+const REPEATS: readonly string[] = ['none', 'daily', 'weekdays', 'weekly', 'monthly']
+const toRepeat = (v: string): RepeatRule => (REPEATS.includes(v) ? (v as RepeatRule) : 'none')
+
 const toAppointment = (r: AppointmentRow): Appointment => ({
   id: r.id,
   title: r.title,
@@ -71,6 +78,9 @@ const toAppointment = (r: AppointmentRow): Appointment => ({
   done: r.done === 1,
   notifiedAt: r.notified_at,
   snoozedUntil: r.snoozed_until,
+  repeat: toRepeat(r.repeat),
+  repeatUntil: r.repeat_until,
+  seriesStart: r.series_start,
   createdAt: r.created_at,
 })
 
@@ -144,12 +154,15 @@ export async function createSqliteRepos(): Promise<Repos> {
       async upsert(a) {
         await db.execute(
           `INSERT INTO appointments
-             (id, title, note, starts_at, remind_before_min, done, notified_at, snoozed_until, created_at)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+             (id, title, note, starts_at, remind_before_min, done, notified_at, snoozed_until,
+              repeat, repeat_until, series_start, created_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
            ON CONFLICT(id) DO UPDATE SET
              title = excluded.title, note = excluded.note, starts_at = excluded.starts_at,
              remind_before_min = excluded.remind_before_min, done = excluded.done,
-             notified_at = excluded.notified_at, snoozed_until = excluded.snoozed_until`,
+             notified_at = excluded.notified_at, snoozed_until = excluded.snoozed_until,
+             repeat = excluded.repeat, repeat_until = excluded.repeat_until,
+             series_start = excluded.series_start`,
           [
             a.id,
             a.title,
@@ -159,6 +172,9 @@ export async function createSqliteRepos(): Promise<Repos> {
             a.done ? 1 : 0,
             a.notifiedAt,
             a.snoozedUntil,
+            a.repeat,
+            a.repeatUntil,
+            a.seriesStart,
             a.createdAt,
           ],
         )

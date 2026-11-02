@@ -46,6 +46,12 @@ fn migrations() -> Vec<Migration> {
             sql: include_str!("../../src/lib/db/migrations/0004_focus_sessions.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 5,
+            description: "add_appointment_recurrence",
+            sql: include_str!("../../src/lib/db/migrations/0005_appointment_recurrence.sql"),
+            kind: MigrationKind::Up,
+        },
     ]
 }
 

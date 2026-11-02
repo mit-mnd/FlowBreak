@@ -3,3 +3,4 @@ export { dueAppointments, missedAppointments, overdueCount, SNOOZE_MIN } from '.
 export { SchedulePage } from './components/SchedulePage'
 export { UpcomingCard } from './components/UpcomingCard'
 export type { Appointment } from './types'
+export { toggleAppointmentDone } from './actions'

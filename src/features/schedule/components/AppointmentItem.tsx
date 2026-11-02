@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import { AlertCircle, BellRing, Check, Trash2 } from 'lucide-react'
+import { AlertCircle, BellRing, Check, Repeat, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { deleteAppointment } from '../actions'
-import { useAppointments } from '../store'
+import { deleteAppointment, toggleAppointmentDone } from '../actions'
 import type { Appointment } from '../types'
 import { useScheduleFormat } from '../useScheduleFormat'
 
@@ -16,7 +15,6 @@ type AppointmentItemProps = {
 export function AppointmentItem({ appointment: a, now, onEdit }: AppointmentItemProps) {
   const { t } = useTranslation()
   const fmt = useScheduleFormat()
-  const toggleDone = useAppointments((s) => s.toggleDone)
   const overdue = !a.done && a.startsAt < now
 
   return (
@@ -36,7 +34,7 @@ export function AppointmentItem({ appointment: a, now, onEdit }: AppointmentItem
             ? t('schedule.markUndone', { title: a.title })
             : t('schedule.markDone', { title: a.title })
         }
-        onClick={() => toggleDone(a.id)}
+        onClick={() => toggleAppointmentDone(a.id)}
         className="grid size-9 shrink-0 place-items-center rounded-full"
       >
         <span
@@ -74,6 +72,12 @@ export function AppointmentItem({ appointment: a, now, onEdit }: AppointmentItem
             <span className="flex items-center gap-0.5 rounded-full bg-danger/10 px-1.5 py-0.5 font-medium text-danger">
               <AlertCircle className="size-3" aria-hidden />
               {t('schedule.missedBadge')}
+            </span>
+          )}
+          {a.repeat !== 'none' && (
+            <span className="flex items-center gap-0.5">
+              <Repeat className="size-3" aria-hidden />
+              {t(`schedule.repeatOptions.${a.repeat}`)}
             </span>
           )}
           {a.remindBeforeMin > 0 && !a.done && (

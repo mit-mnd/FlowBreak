@@ -31,6 +31,9 @@ const appt = (over: Partial<Appointment> = {}): Appointment => ({
   done: false,
   notifiedAt: null,
   snoozedUntil: null,
+  repeat: 'none',
+  repeatUntil: null,
+  seriesStart: null,
   createdAt: 0,
   ...over,
 })
@@ -165,5 +168,15 @@ describe('form helpers', () => {
     // Editing without touching the time keeps a past start valid.
     const past = { title: 'Old', date: '2026-10-12', time: '08:00' }
     expect(validateForm(past, now, at(12, 8))).toBeNull()
+  })
+
+  it('validates the repeat end date', () => {
+    const ok = { title: 'Standup', date: '2026-10-13', time: '09:00' }
+    expect(validateForm({ ...ok, until: '' }, now)).toBeNull()
+    expect(validateForm({ ...ok, until: '2026-10-13' }, now)).toBeNull() // same day is fine
+    expect(validateForm({ ...ok, until: '2026-12-31' }, now)).toBeNull()
+    expect(validateForm({ ...ok, until: '2026-10-12' }, now)).toBe('until')
+    expect(validateForm({ ...ok, until: '2026-02-30' }, now)).toBe('until')
+    expect(validateForm({ ...ok, until: 'nope' }, now)).toBe('until')
   })
 })

@@ -23,6 +23,8 @@ export type MovementLog = {
   loggedAt: number
 }
 
+export type RepeatRule = 'none' | 'daily' | 'weekdays' | 'weekly' | 'monthly'
+
 export type Appointment = {
   id: string
   title: string
@@ -36,6 +38,12 @@ export type Appointment = {
   notifiedAt: number | null
   /** After "snooze": do not notify again before this time. */
   snoozedUntil: number | null
+  /** Recurrence. `startsAt` is always the current (next) occurrence of the series. */
+  repeat: RepeatRule
+  /** Last moment an occurrence may start; null = repeats forever. */
+  repeatUntil: number | null
+  /** First occurrence of the series: anchors time of day, weekday and day of month. */
+  seriesStart: number | null
   createdAt: number
 }
 

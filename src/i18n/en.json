@@ -195,6 +195,9 @@
       "quickTomorrow": "Tomorrow",
       "quickNextWeek": "Next week",
       "remind": "Remind me",
+      "repeat": "Repeat",
+      "repeatUntil": "Repeat until (optional)",
+      "repeatUntilHint": "Leave empty to repeat forever.",
       "note": "Note (optional)",
       "create": "Schedule",
       "save": "Save",
@@ -203,8 +206,17 @@
     "errors": {
       "title": "Please enter a title.",
       "datetime": "The date or time is not valid.",
-      "past": "That time has already passed. Pick a time in the future."
+      "past": "That time has already passed. Pick a time in the future.",
+      "until": "The end date must be on or after the start date."
     },
+    "repeatOptions": {
+      "none": "Does not repeat",
+      "daily": "Every day",
+      "weekdays": "Monday to Friday",
+      "weekly": "Every week",
+      "monthly": "Every month"
+    },
+    "nextOccurrence": "Done with “{{title}}”. Next: {{when}}",
     "remindAt": "At the time",
     "remindMin": "{{count}} min before",
     "remindHour": "1 hour before",

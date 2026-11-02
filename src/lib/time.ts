@@ -17,6 +17,13 @@ export function startOfDay(ts: number): number {
   return d.getTime()
 }
 
+/** Last millisecond of the local day containing `ts`. */
+export function endOfDay(ts: number): number {
+  const d = new Date(ts)
+  d.setHours(23, 59, 59, 999)
+  return d.getTime()
+}
+
 /** Start of the local day `n` days before `ts` (n = 0 is today). */
 export function daysAgo(ts: number, n: number): number {
   const d = new Date(startOfDay(ts))
