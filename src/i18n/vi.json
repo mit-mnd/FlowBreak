@@ -226,7 +226,8 @@
     "pickDuration": "Chọn thời lượng",
     "hint": "Nhắc nhở sẽ được hoãn tối đa 15 phút.",
     "finished": "Hết phiên tập trung! Nghỉ một chút nhé.",
-    "durationOption": "{{count}} phút"
+    "durationOption": "{{count}} phút",
+    "spent": "Đã tập trung {{count}} phút"
   },
   "reminders": {
     "water": {
@@ -276,6 +277,9 @@
     "complianceHint": "Tỷ lệ lời nhắc bạn đã làm theo trong 7 ngày qua. Lời nhắc hoãn không được tính.",
     "totalMoves": "Lần vận động",
     "totalTasks": "Việc đã xong",
+    "totalFocus": "Tổng thời gian tập trung",
+    "focus": "Phút tập trung mỗi ngày",
+    "focusShort": "Phút",
     "goal": "Mục tiêu",
     "day": "Ngày",
     "emptyTitle": "Chưa có dữ liệu",

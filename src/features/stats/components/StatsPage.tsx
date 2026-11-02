@@ -1,8 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BarChart3, Table2 } from 'lucide-react'
-import { getRepos, type MovementLog, type ReminderEvent, type WaterLog } from '@/lib/db'
+import {
+  getRepos,
+  type FocusLog,
+  type MovementLog,
+  type ReminderEvent,
+  type WaterLog,
+} from '@/lib/db'
 import { daysAgo } from '@/lib/time'
+import { cn } from '@/lib/utils'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -11,6 +18,7 @@ import { useSettings } from '@/features/settings'
 import { useTodos } from '@/features/todos'
 import { useHydration } from '@/features/hydration'
 import { useMovement } from '@/features/movement'
+import { useFocus } from '@/features/focus'
 import { buildDailySeries, compliance, currentStreak, summarize } from '../logic'
 import { BarChart, type BarDatum } from './BarChart'
 
@@ -25,10 +33,12 @@ export function StatsPage() {
   // Re-query when today's logs change so the page stays live.
   const waterVersion = useHydration((s) => s.logs.length)
   const moveVersion = useMovement((s) => s.logs.length)
+  const focusVersion = useFocus((s) => s.logs.length)
   const [data, setData] = useState<{
     water: WaterLog[]
     movement: MovementLog[]
     events: ReminderEvent[]
+    focus: FocusLog[]
   } | null>(null)
   const [showTable, setShowTable] = useState(false)
   const now = Date.now()
@@ -38,20 +48,22 @@ export function StatsPage() {
     void (async () => {
       const repos = await getRepos()
       const since = daysAgo(Date.now(), STREAK_DAYS - 1)
-      const [water, movement, events] = await Promise.all([
+      const [water, movement, events, focus] = await Promise.all([
         repos.water.listSince(since),
         repos.movement.listSince(since),
         repos.reminderEvents.listSince(daysAgo(Date.now(), DAYS - 1)),
+        repos.focus.listSince(daysAgo(Date.now(), DAYS - 1)),
       ])
-      if (!cancelled) setData({ water, movement, events })
+      if (!cancelled) setData({ water, movement, events, focus })
     })()
     return () => {
       cancelled = true
     }
-  }, [waterVersion, moveVersion])
+  }, [waterVersion, moveVersion, focusVersion])
 
   const longSeries = useMemo(
-    () => (data ? buildDailySeries(now, STREAK_DAYS, data.water, data.movement, todos) : []),
+    () =>
+      data ? buildDailySeries(now, STREAK_DAYS, data.water, data.movement, todos, data.focus) : [],
     // `now` intentionally excluded: recomputed whenever data changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data, todos],
@@ -111,6 +123,11 @@ export function StatsPage() {
             <StatTile label={t('stats.totalMoves')} value={num.format(summary.totalMoves)} />
             <StatTile label={t('stats.totalTasks')} value={num.format(summary.totalTasks)} />
             <StatTile
+              className="col-span-2"
+              label={t('stats.totalFocus')}
+              value={t('common.minutes', { count: summary.totalFocusMin })}
+            />
+            <StatTile
               label={t('stats.streakWater')}
               value={t('stats.days', { count: waterStreak })}
             />
@@ -140,6 +157,12 @@ export function StatsPage() {
               />
               <BarChart title={t('stats.movement')} tone="move" data={bars((d) => d.moves)} />
               <BarChart title={t('stats.tasks')} tone="neutral" data={bars((d) => d.tasksDone)} />
+              <BarChart
+                title={t('stats.focus')}
+                tone="neutral"
+                data={bars((d) => d.focusMin)}
+                formatValue={(v) => t('common.minutes', { count: v })}
+              />
             </CardContent>
           </Card>
 
@@ -168,8 +191,11 @@ export function StatsPage() {
                     <th scope="col" className="px-2 py-2 text-right font-medium">
                       {t('stats.totalMoves')}
                     </th>
-                    <th scope="col" className="px-4 py-2 text-right font-medium">
+                    <th scope="col" className="px-2 py-2 text-right font-medium">
                       {t('stats.totalTasks')}
+                    </th>
+                    <th scope="col" className="px-4 py-2 text-right font-medium">
+                      {t('stats.focusShort')}
                     </th>
                   </tr>
                 </thead>
@@ -184,7 +210,8 @@ export function StatsPage() {
                         </th>
                         <td className="px-2 py-2 text-right">{num.format(d.waterMl)}</td>
                         <td className="px-2 py-2 text-right">{d.moves}</td>
-                        <td className="px-4 py-2 text-right">{d.tasksDone}</td>
+                        <td className="px-2 py-2 text-right">{d.tasksDone}</td>
+                        <td className="px-4 py-2 text-right">{d.focusMin}</td>
                       </tr>
                     ))}
                 </tbody>
@@ -197,9 +224,17 @@ export function StatsPage() {
   )
 }
 
-function StatTile({ label, value }: { label: string; value: string }) {
+function StatTile({
+  label,
+  value,
+  className,
+}: {
+  label: string
+  value: string
+  className?: string
+}) {
   return (
-    <Card className="p-3">
+    <Card className={cn('p-3', className)}>
       <p className="text-xs text-muted-foreground">{label}</p>
       <p className="mt-1 text-xl font-semibold tabular-nums">{value}</p>
     </Card>

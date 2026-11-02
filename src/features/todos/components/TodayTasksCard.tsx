@@ -4,7 +4,7 @@ import { ArrowRight, ListChecks, ListTodo, PartyPopper } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/EmptyState'
-import { StartFocusDialog, useFocus } from '@/features/focus'
+import { StartFocusDialog, focusMinutesByTask, useFocus } from '@/features/focus'
 import { activeTodos } from '../logic'
 import { useTodos } from '../store'
 import type { Todo } from '../types'
@@ -17,6 +17,8 @@ export function TodayTasksCard({ onViewAll }: { onViewAll: () => void }) {
   const { t } = useTranslation()
   const items = useTodos((s) => s.items)
   const focusTaskId = useFocus((s) => s.session?.taskId ?? null)
+  const focusLogs = useFocus((s) => s.logs)
+  const spent = useMemo(() => focusMinutesByTask(focusLogs), [focusLogs])
   const inputRef = useRef<HTMLInputElement>(null)
   const [focusTarget, setFocusTarget] = useState<Todo | null>(null)
   const active = useMemo(() => activeTodos(items), [items])
@@ -54,6 +56,7 @@ export function TodayTasksCard({ onViewAll }: { onViewAll: () => void }) {
                 key={todo.id}
                 todo={todo}
                 focused={todo.id === focusTaskId}
+                focusMin={spent[todo.id]}
                 onFocusTask={setFocusTarget}
               />
             ))}

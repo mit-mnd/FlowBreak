@@ -39,6 +39,23 @@ export type Appointment = {
   createdAt: number
 }
 
+/** A finished focus session. `taskId` is kept even if the task is deleted later. */
+export type FocusLog = {
+  id: string
+  taskId: string | null
+  title: string | null
+  startedAt: number
+  endedAt: number
+  plannedMin: number
+  /** Ran for the full planned time (not stopped early). */
+  completed: boolean
+}
+
+export type FocusRepo = {
+  listSince(ts: number): Promise<FocusLog[]>
+  upsert(log: FocusLog): Promise<void>
+}
+
 export type ReminderOutcome = 'done' | 'snoozed' | 'skipped' | 'ignored'
 
 /** One habit reminder (water / movement) that was shown, and what the user did with it. */
@@ -81,4 +98,5 @@ export type Repos = {
   movement: LogRepo<MovementLog>
   appointments: AppointmentRepo
   reminderEvents: ReminderEventRepo
+  focus: FocusRepo
 }

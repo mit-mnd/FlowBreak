@@ -1,4 +1,5 @@
-export { useFocus, isFocusActive, focusEndsAt, FOCUS_DURATIONS } from './store'
-export type { FocusSession } from './store'
+export { useFocus, FOCUS_DURATIONS } from './store'
+export { isFocusActive, focusEndsAt, focusMinutes, focusMinutesByTask } from './logic'
+export type { FocusSession } from './types'
 export { FocusBanner } from './components/FocusBanner'
 export { StartFocusDialog } from './components/StartFocusDialog'

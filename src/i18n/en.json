@@ -226,7 +226,8 @@
     "pickDuration": "Choose duration",
     "hint": "Reminders wait up to 15 minutes.",
     "finished": "Focus session done! Take a short break.",
-    "durationOption": "{{count}} min"
+    "durationOption": "{{count}} min",
+    "spent": "{{count}} min focused"
   },
   "reminders": {
     "water": {
@@ -276,6 +277,9 @@
     "complianceHint": "Share of reminders you acted on in the last 7 days. Snoozed reminders are not counted.",
     "totalMoves": "Movement breaks",
     "totalTasks": "Tasks done",
+    "totalFocus": "Total focus time",
+    "focus": "Focus minutes per day",
+    "focusShort": "Min",
     "goal": "Goal",
     "day": "Day",
     "emptyTitle": "No data yet",

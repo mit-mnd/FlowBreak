@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Reorder, motion, useDragControls } from 'framer-motion'
-import { Check, GripVertical, Star, Target, Trash2 } from 'lucide-react'
+import { Check, GripVertical, Star, Target, Timer, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useTodos } from '../store'
@@ -15,6 +15,8 @@ type TaskItemProps = {
   isFirst?: boolean
   isLast?: boolean
   focused?: boolean
+  /** Minutes already spent in focus sessions on this task. */
+  focusMin?: number
   onFocusTask?: (todo: Todo) => void
 }
 
@@ -24,6 +26,7 @@ export function TaskItem({
   isFirst,
   isLast,
   focused,
+  focusMin,
   onFocusTask,
 }: TaskItemProps) {
   const controls = useDragControls()
@@ -34,6 +37,7 @@ export function TaskItem({
       isFirst={isFirst}
       isLast={isLast}
       focused={focused}
+      focusMin={focusMin}
       onFocusTask={onFocusTask}
       onDragStart={reorderable ? (e) => controls.start(e) : undefined}
     />
@@ -69,11 +73,21 @@ type TaskRowProps = {
   isFirst?: boolean
   isLast?: boolean
   focused?: boolean
+  focusMin?: number
   onFocusTask?: (todo: Todo) => void
   onDragStart?: (e: React.PointerEvent) => void
 }
 
-function TaskRow({ todo, full, isFirst, isLast, focused, onFocusTask, onDragStart }: TaskRowProps) {
+function TaskRow({
+  todo,
+  full,
+  isFirst,
+  isLast,
+  focused,
+  focusMin,
+  onFocusTask,
+  onDragStart,
+}: TaskRowProps) {
   const { t } = useTranslation()
   const rename = useTodos((s) => s.rename)
   const togglePriority = useTodos((s) => s.togglePriority)
@@ -180,6 +194,12 @@ function TaskRow({ todo, full, isFirst, isLast, focused, onFocusTask, onDragStar
               <span className="sr-only">{t('todos.important')}: </span>
             )}
             {title}
+          </p>
+        )}
+        {!!focusMin && !editing && (
+          <p className="flex items-center gap-1 px-1 text-xs text-muted-foreground tabular-nums">
+            <Timer className="size-3" aria-hidden />
+            {t('focus.spent', { count: focusMin })}
           </p>
         )}
       </div>

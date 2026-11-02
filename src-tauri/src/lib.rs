@@ -40,6 +40,12 @@ fn migrations() -> Vec<Migration> {
             sql: include_str!("../../src/lib/db/migrations/0003_reminder_events.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 4,
+            description: "create_focus_sessions",
+            sql: include_str!("../../src/lib/db/migrations/0004_focus_sessions.sql"),
+            kind: MigrationKind::Up,
+        },
     ]
 }
 

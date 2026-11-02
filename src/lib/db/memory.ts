@@ -1,4 +1,4 @@
-import type { Appointment, LogRepo, ReminderEvent, Repos, Todo } from './types'
+import type { Appointment, FocusLog, LogRepo, ReminderEvent, Repos, Todo } from './types'
 
 /**
  * Browser / test implementation. Persists to localStorage when available so
@@ -51,7 +51,16 @@ export function createMemoryRepos(prefix = 'flowbreak'): Repos {
   const todos = table<Todo>(`${prefix}:todos`)
   const appointments = table<Appointment>(`${prefix}:appointments`)
   const events = table<ReminderEvent>(`${prefix}:reminder-events`)
+  const focus = table<FocusLog>(`${prefix}:focus`)
   return {
+    focus: {
+      listSince: async (ts) =>
+        focus
+          .all()
+          .filter((f) => f.startedAt >= ts)
+          .sort((a, b) => a.startedAt - b.startedAt),
+      upsert: async (f) => focus.put(f),
+    },
     reminderEvents: {
       listSince: async (ts) =>
         events

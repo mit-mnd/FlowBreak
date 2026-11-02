@@ -1,5 +1,5 @@
 import { MINUTE, dayKey, daysAgo } from '@/lib/time'
-import type { MovementLog, ReminderEvent, Todo, WaterLog } from '@/lib/db'
+import type { FocusLog, MovementLog, ReminderEvent, Todo, WaterLog } from '@/lib/db'
 
 export type DayStat = {
   key: string
@@ -7,6 +7,8 @@ export type DayStat = {
   waterMl: number
   moves: number
   tasksDone: number
+  /** Whole minutes of focus sessions that started this day. */
+  focusMin: number
 }
 
 /** One entry per local day, oldest first, ending today. */
@@ -16,12 +18,20 @@ export function buildDailySeries(
   water: WaterLog[],
   movement: MovementLog[],
   todos: Todo[],
+  focus: FocusLog[] = [],
 ): DayStat[] {
   const series: DayStat[] = []
   const index = new Map<string, DayStat>()
   for (let i = days - 1; i >= 0; i--) {
     const dayStart = daysAgo(now, i)
-    const stat = { key: dayKey(dayStart), dayStart, waterMl: 0, moves: 0, tasksDone: 0 }
+    const stat = {
+      key: dayKey(dayStart),
+      dayStart,
+      waterMl: 0,
+      moves: 0,
+      tasksDone: 0,
+      focusMin: 0,
+    }
     series.push(stat)
     index.set(stat.key, stat)
   }
@@ -38,6 +48,12 @@ export function buildDailySeries(
     const s = index.get(dayKey(t.completedAt))
     if (s) s.tasksDone += 1
   }
+  // Sum the raw durations first so rounding per session does not drift.
+  for (const f of focus) {
+    const s = index.get(dayKey(f.startedAt))
+    if (s) s.focusMin += (f.endedAt - f.startedAt) / MINUTE
+  }
+  for (const s of series) s.focusMin = Math.round(s.focusMin)
   return series
 }
 
@@ -46,6 +62,7 @@ export type StatsSummary = {
   goalDays: number
   totalMoves: number
   totalTasks: number
+  totalFocusMin: number
   hasData: boolean
 }
 
@@ -53,12 +70,14 @@ export function summarize(series: DayStat[], goalMl: number): StatsSummary {
   const totalWater = series.reduce((s, d) => s + d.waterMl, 0)
   const totalMoves = series.reduce((s, d) => s + d.moves, 0)
   const totalTasks = series.reduce((s, d) => s + d.tasksDone, 0)
+  const totalFocusMin = series.reduce((s, d) => s + d.focusMin, 0)
   return {
     avgWaterMl: series.length ? Math.round(totalWater / series.length) : 0,
     goalDays: series.filter((d) => d.waterMl >= goalMl).length,
     totalMoves,
     totalTasks,
-    hasData: totalWater + totalMoves + totalTasks > 0,
+    totalFocusMin,
+    hasData: totalWater + totalMoves + totalTasks + totalFocusMin > 0,
   }
 }
 

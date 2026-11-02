@@ -5,7 +5,7 @@ import { ChevronDown, ListTodo, PartyPopper } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { EmptyState } from '@/components/EmptyState'
-import { StartFocusDialog, useFocus } from '@/features/focus'
+import { StartFocusDialog, focusMinutesByTask, useFocus } from '@/features/focus'
 import { activeTodos, completedTodos } from '../logic'
 import { clearCompletedTodos } from '../actions'
 import { useTodos } from '../store'
@@ -18,6 +18,8 @@ export function TasksPage() {
   const items = useTodos((s) => s.items)
   const reorder = useTodos((s) => s.reorder)
   const focusTaskId = useFocus((s) => s.session?.taskId ?? null)
+  const focusLogs = useFocus((s) => s.logs)
+  const spent = useMemo(() => focusMinutesByTask(focusLogs), [focusLogs])
   const inputRef = useRef<HTMLInputElement>(null)
   const [showDone, setShowDone] = useState(false)
   const [focusTarget, setFocusTarget] = useState<Todo | null>(null)
@@ -67,6 +69,7 @@ export function TasksPage() {
                 isFirst={i === 0}
                 isLast={i === active.length - 1}
                 focused={todo.id === focusTaskId}
+                focusMin={spent[todo.id]}
                 onFocusTask={setFocusTarget}
               />
             ))}
@@ -100,7 +103,7 @@ export function TasksPage() {
             {showDone && (
               <ul className="mt-2 space-y-1">
                 {done.map((todo) => (
-                  <TaskItem key={todo.id} todo={todo} reorderable />
+                  <TaskItem key={todo.id} todo={todo} reorderable focusMin={spent[todo.id]} />
                 ))}
               </ul>
             )}

@@ -1,6 +1,7 @@
 import Database from '@tauri-apps/plugin-sql'
 import type {
   Appointment,
+  FocusLog,
   MovementLog,
   ReminderEvent,
   ReminderOutcome,
@@ -39,6 +40,15 @@ type EventRow = {
   outcome: string | null
   resolved_at: number | null
 }
+type FocusRow = {
+  id: string
+  task_id: string | null
+  title: string | null
+  started_at: number
+  ended_at: number
+  planned_min: number
+  completed: number
+}
 type WaterRow = { id: string; amount_ml: number; logged_at: number }
 type MovementRow = { id: string; exercise_id: string; duration_sec: number; logged_at: number }
 
@@ -74,10 +84,38 @@ const toEvent = (r: EventRow): ReminderEvent => ({
   resolvedAt: r.resolved_at,
 })
 
+const toFocus = (r: FocusRow): FocusLog => ({
+  id: r.id,
+  taskId: r.task_id,
+  title: r.title,
+  startedAt: r.started_at,
+  endedAt: r.ended_at,
+  plannedMin: r.planned_min,
+  completed: r.completed === 1,
+})
+
 export async function createSqliteRepos(): Promise<Repos> {
   const db = await Database.load(DB_URL)
 
   return {
+    focus: {
+      async listSince(ts) {
+        const rows = await db.select<FocusRow[]>(
+          'SELECT * FROM focus_sessions WHERE started_at >= $1 ORDER BY started_at ASC',
+          [ts],
+        )
+        return rows.map(toFocus)
+      },
+      async upsert(f) {
+        await db.execute(
+          `INSERT INTO focus_sessions (id, task_id, title, started_at, ended_at, planned_min, completed)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)
+           ON CONFLICT(id) DO UPDATE SET
+             ended_at = excluded.ended_at, completed = excluded.completed`,
+          [f.id, f.taskId, f.title, f.startedAt, f.endedAt, f.plannedMin, f.completed ? 1 : 0],
+        )
+      },
+    },
     reminderEvents: {
       async listSince(ts) {
         const rows = await db.select<EventRow[]>(

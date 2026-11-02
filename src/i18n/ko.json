@@ -223,7 +223,8 @@
     "pickDuration": "시간 선택",
     "hint": "알림은 최대 15분까지 미뤄져요.",
     "finished": "집중 세션 끝! 잠깐 쉬어 가세요.",
-    "durationOption": "{{count}}분"
+    "durationOption": "{{count}}분",
+    "spent": "{{count}}분 집중"
   },
   "reminders": {
     "water": {
@@ -273,6 +274,9 @@
     "complianceHint": "최근 7일 동안 알림을 따른 비율이에요. 미룬 알림은 포함하지 않아요.",
     "totalMoves": "움직임 횟수",
     "totalTasks": "완료한 할 일",
+    "totalFocus": "총 집중 시간",
+    "focus": "하루 집중 시간(분)",
+    "focusShort": "분",
     "goal": "목표",
     "day": "날짜",
     "emptyTitle": "아직 데이터가 없어요",

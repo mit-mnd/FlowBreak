@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { ReminderEvent } from '@/lib/db'
+import type { FocusLog, ReminderEvent } from '@/lib/db'
 import {
   PENDING_GRACE_MS,
   buildDailySeries,
@@ -59,6 +59,7 @@ describe('stats', () => {
       goalDays: 1,
       totalMoves: 2,
       totalTasks: 1,
+      totalFocusMin: 0,
       hasData: true,
     })
     expect(summarize(buildDailySeries(now, 7, [], [], []), 2000).hasData).toBe(false)
@@ -76,6 +77,56 @@ describe('stats', () => {
   })
 })
 
+describe('focus minutes', () => {
+  const MIN = 60_000
+  const focus = (startedAt: number, minutes: number): FocusLog => ({
+    id: String(startedAt),
+    taskId: null,
+    title: null,
+    startedAt,
+    endedAt: startedAt + minutes * MIN,
+    plannedMin: 25,
+    completed: true,
+  })
+  const t = new Date(2026, 9, 12, 15).getTime()
+
+  it('adds focus minutes to the day the session started', () => {
+    const s = buildDailySeries(
+      t,
+      7,
+      [],
+      [],
+      [],
+      [focus(at(12, 9), 25), focus(at(12, 11), 40), focus(at(11, 9), 15)],
+    )
+    expect(s[6]).toMatchObject({ key: '2026-10-12', focusMin: 65 })
+    expect(s[5]).toMatchObject({ key: '2026-10-11', focusMin: 15 })
+    expect(s[4]?.focusMin).toBe(0)
+  })
+
+  it('ignores sessions outside the window and defaults to none', () => {
+    expect(
+      buildDailySeries(t, 7, [], [], [], [focus(at(1, 9), 30)]).every((d) => d.focusMin === 0),
+    ).toBe(true)
+    expect(buildDailySeries(t, 7, [], [], []).every((d) => d.focusMin === 0)).toBe(true)
+  })
+
+  it('rounds the day total once (three 1.5 min sessions are 5 min)', () => {
+    const logs = [0, 1, 2].map((i) => ({
+      ...focus(at(12, 9) + i * 10 * MIN, 0),
+      endedAt: at(12, 9) + i * 10 * MIN + 90_000,
+    }))
+    expect(buildDailySeries(t, 7, [], [], [], logs)[6]?.focusMin).toBe(5)
+  })
+
+  it('totals them in the summary and counts them as data', () => {
+    const series = buildDailySeries(t, 7, [], [], [], [focus(at(12, 9), 25), focus(at(11, 9), 20)])
+    const sum = summarize(series, 2000)
+    expect(sum.totalFocusMin).toBe(45)
+    expect(sum.hasData).toBe(true)
+  })
+})
+
 describe('currentStreak', () => {
   const day = (waterMl: number, moves = 0): DayStat => ({
     key: '',
@@ -83,6 +134,7 @@ describe('currentStreak', () => {
     waterMl,
     moves,
     tasksDone: 0,
+    focusMin: 0,
   })
   const goal = (d: DayStat) => d.waterMl >= 2000
 
