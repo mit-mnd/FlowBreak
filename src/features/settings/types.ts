@@ -4,6 +4,17 @@ import type { SoundChoice } from '@/lib/sound'
 
 export type ThemePreference = 'light' | 'dark' | 'system'
 
+/** How eagerly an ignored reminder comes back: `light` backs off fastest. */
+export type ReminderLevel = 'light' | 'normal' | 'frequent'
+
+export const REMINDER_LEVELS: readonly ReminderLevel[] = ['light', 'normal', 'frequent']
+
+const BACKOFF: Record<ReminderLevel, number> = { light: 3, normal: 2, frequent: 1 }
+
+export function isReminderLevel(value: unknown): value is ReminderLevel {
+  return REMINDER_LEVELS.includes(value as ReminderLevel)
+}
+
 export type Settings = {
   theme: ThemePreference
   language: Language
@@ -21,6 +32,7 @@ export type Settings = {
   workDays: number[]
   systemNotify: boolean
   sound: SoundChoice
+  reminderLevel: ReminderLevel
   autostart: boolean
 }
 
@@ -40,6 +52,7 @@ export const DEFAULT_SETTINGS: Settings = {
   workDays: [1, 2, 3, 4, 5],
   systemNotify: false,
   sound: 'chime',
+  reminderLevel: 'normal',
   autostart: false,
 }
 
@@ -52,6 +65,8 @@ export function toSchedulerConfig(s: Settings): SchedulerConfig {
     idleResetMin: s.idleResetMin,
     focusMaxDelayMin: 15,
     renotifyMin: 15,
+    renotifyBackoff: BACKOFF[s.reminderLevel],
+    renotifyMaxMin: 60,
     naturalBreakWindowMin: 10,
   }
 }

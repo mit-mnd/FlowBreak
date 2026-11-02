@@ -6,6 +6,7 @@ import {
   isWithinWorkHours,
   nextReminderAt,
   pause,
+  renotifyDelayMin,
   tick,
 } from './scheduler'
 import type { SchedulerConfig } from './types'
@@ -21,6 +22,8 @@ const config: SchedulerConfig = {
   idleResetMin: 5,
   focusMaxDelayMin: 15,
   renotifyMin: 15,
+  renotifyBackoff: 2,
+  renotifyMaxMin: 60,
   naturalBreakWindowMin: 10,
 }
 
@@ -122,6 +125,89 @@ describe('tick', () => {
     const s = createInitialState(at(9))
     const off = { ...config, water: { ...config.water, enabled: false } }
     expect(tick(active(at(9, 50)), s, off).due).toEqual(['movement'])
+  })
+})
+
+describe('backoff for unanswered reminders', () => {
+  const waterOnly = { ...config, movement: { ...config.movement, enabled: false } }
+
+  /** Run ticks at each time, feeding the state forward; returns the times it fired. */
+  const firedAt = (cfg: SchedulerConfig, from: number, until: number) => {
+    let state = createInitialState(at(9))
+    const fired: number[] = []
+    for (let t = from; t <= until; t += MINUTE) {
+      const r = tick(active(t), state, cfg)
+      state = r.state
+      if (r.due.length > 0) fired.push(t)
+    }
+    return fired.map((t) => Math.round((t - at(9)) / MINUTE))
+  }
+
+  it('waits 15, 30, then 60 minutes when ignored (normal)', () => {
+    // First at 45 min after 9:00, then +15, +30, +60, +60 (capped).
+    expect(firedAt(waterOnly, at(9), at(14))).toEqual([45, 60, 90, 150, 210, 270])
+  })
+
+  it('repeats every 15 minutes when the backoff factor is 1 (frequent)', () => {
+    const frequent = { ...waterOnly, renotifyBackoff: 1 }
+    expect(firedAt(frequent, at(9), at(10, 50))).toEqual([45, 60, 75, 90, 105])
+  })
+
+  it('backs off faster with a larger factor (light): 15, 45, 60', () => {
+    const light = { ...waterOnly, renotifyBackoff: 3 }
+    expect(firedAt(light, at(9), at(12))).toEqual([45, 60, 105, 165])
+  })
+
+  it('counts every unanswered show, per kind', () => {
+    const s = createInitialState(at(9))
+    const first = tick(active(at(9, 50)), s, config)
+    expect(first.due).toEqual(['water', 'movement'])
+    expect(first.state.unanswered).toEqual({ water: 1, movement: 1 })
+    // Only water is answered; movement keeps backing off.
+    const answered = applyAction(first.state, 'water', 'done', at(9, 51))
+    expect(answered.unanswered).toEqual({ water: 0, movement: 1 })
+  })
+
+  it('resets the backoff on done, skip and snooze', () => {
+    const ignored = { ...createInitialState(at(9)), unanswered: { water: 3, movement: 2 } }
+    for (const action of ['done', 'skip', 'snooze'] as const) {
+      expect(applyAction(ignored, 'water', action, at(10)).unanswered).toEqual({
+        water: 0,
+        movement: 2,
+      })
+    }
+  })
+
+  it('resets the backoff when the user goes away', () => {
+    const ignored = { ...createInitialState(at(9)), unanswered: { water: 3, movement: 3 } }
+    const away = tick({ now: at(10), idleSec: 6 * 60, focusActive: false }, ignored, config)
+    expect(away.state.unanswered).toEqual({ water: 0, movement: 0 })
+  })
+
+  it('resets the backoff outside work hours and while paused, without churning clean state', () => {
+    const ignored = { ...createInitialState(at(17)), unanswered: { water: 2, movement: 1 } }
+    expect(tick(active(at(19)), ignored, config).state.unanswered).toEqual({
+      water: 0,
+      movement: 0,
+    })
+    const paused = pause(ignored, at(11))
+    expect(tick(active(at(9)), paused, config).state.unanswered).toEqual({ water: 0, movement: 0 })
+    const clean = createInitialState(at(17))
+    expect(tick(active(at(19)), clean, config).state).toBe(clean)
+  })
+
+  it('never waits less than renotifyMin, even if the cap is lower', () => {
+    expect(renotifyDelayMin(5, { ...config, renotifyMaxMin: 5 })).toBe(15)
+    expect(renotifyDelayMin(0, config)).toBe(15)
+    expect(renotifyDelayMin(1, config)).toBe(30)
+    expect(renotifyDelayMin(2, config)).toBe(60)
+    expect(renotifyDelayMin(50, config)).toBe(60)
+  })
+
+  it('still respects an explicit snooze that is longer than the backoff', () => {
+    const s = applyAction(createInitialState(at(9)), 'water', 'snooze', at(9, 45), 120)
+    expect(tick(active(at(11)), s, waterOnly).due).toEqual([])
+    expect(tick(active(at(11, 45)), s, waterOnly).due).toEqual(['water'])
   })
 })
 

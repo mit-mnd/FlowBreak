@@ -21,7 +21,7 @@ import { Switch } from '@/components/ui/switch'
 import { Segmented } from '@/components/Segmented'
 import { NumberStepper } from '@/components/NumberStepper'
 import { useSettings } from '../store'
-import type { ThemePreference } from '../types'
+import { REMINDER_LEVELS, type ReminderLevel, type ThemePreference } from '../types'
 import { SoundPicker } from './SoundPicker'
 
 function Section({
@@ -234,6 +234,21 @@ export function SettingsPage() {
 
       <Section icon={Bell} title={t('settings.notifications')}>
         <p className="py-2 text-xs text-muted-foreground">{t('settings.popup')}</p>
+        <div className="space-y-2 py-2.5">
+          <span className="block text-sm">{t('settings.reminderLevel')}</span>
+          <Segmented<ReminderLevel>
+            label={t('settings.reminderLevel')}
+            value={settings.reminderLevel}
+            onChange={(reminderLevel) => update({ reminderLevel })}
+            options={REMINDER_LEVELS.map((value) => ({
+              value,
+              label: t(`settings.reminderLevels.${value}`),
+            }))}
+          />
+          <span className="block text-xs text-muted-foreground">
+            {t(`settings.reminderLevelHints.${settings.reminderLevel}`)}
+          </span>
+        </div>
         <ToggleRow
           label={t('settings.systemNotify')}
           hint={t('settings.systemNotifyHint')}

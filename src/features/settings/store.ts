@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { isSoundChoice } from '@/lib/sound'
 import { kvGet, kvSet, setAutostart } from '@/lib/tauri'
-import { DEFAULT_SETTINGS, type Settings } from './types'
+import { DEFAULT_SETTINGS, isReminderLevel, type Settings } from './types'
 
 const KEY = 'settings'
 
@@ -19,6 +19,9 @@ export const useSettings = create<SettingsStore>((set, get) => ({
     const saved = await kvGet<Partial<Settings>>(KEY)
     const settings = { ...DEFAULT_SETTINGS, ...saved }
     if (!isSoundChoice(settings.sound)) settings.sound = DEFAULT_SETTINGS.sound
+    if (!isReminderLevel(settings.reminderLevel)) {
+      settings.reminderLevel = DEFAULT_SETTINGS.reminderLevel
+    }
     set({ settings, loaded: true })
   },
   update(patch) {

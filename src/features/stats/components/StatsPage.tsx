@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BarChart3, Table2 } from 'lucide-react'
-import { getRepos, type MovementLog, type WaterLog } from '@/lib/db'
+import { getRepos, type MovementLog, type ReminderEvent, type WaterLog } from '@/lib/db'
 import { daysAgo } from '@/lib/time'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -11,10 +11,12 @@ import { useSettings } from '@/features/settings'
 import { useTodos } from '@/features/todos'
 import { useHydration } from '@/features/hydration'
 import { useMovement } from '@/features/movement'
-import { buildDailySeries, summarize } from '../logic'
+import { buildDailySeries, compliance, currentStreak, summarize } from '../logic'
 import { BarChart, type BarDatum } from './BarChart'
 
 const DAYS = 7
+/** History loaded to measure streaks; the charts only show the last `DAYS`. */
+const STREAK_DAYS = 90
 
 export function StatsPage() {
   const { t, i18n } = useTranslation()
@@ -23,7 +25,11 @@ export function StatsPage() {
   // Re-query when today's logs change so the page stays live.
   const waterVersion = useHydration((s) => s.logs.length)
   const moveVersion = useMovement((s) => s.logs.length)
-  const [data, setData] = useState<{ water: WaterLog[]; movement: MovementLog[] } | null>(null)
+  const [data, setData] = useState<{
+    water: WaterLog[]
+    movement: MovementLog[]
+    events: ReminderEvent[]
+  } | null>(null)
   const [showTable, setShowTable] = useState(false)
   const now = Date.now()
 
@@ -31,25 +37,31 @@ export function StatsPage() {
     let cancelled = false
     void (async () => {
       const repos = await getRepos()
-      const since = daysAgo(Date.now(), DAYS - 1)
-      const [water, movement] = await Promise.all([
+      const since = daysAgo(Date.now(), STREAK_DAYS - 1)
+      const [water, movement, events] = await Promise.all([
         repos.water.listSince(since),
         repos.movement.listSince(since),
+        repos.reminderEvents.listSince(daysAgo(Date.now(), DAYS - 1)),
       ])
-      if (!cancelled) setData({ water, movement })
+      if (!cancelled) setData({ water, movement, events })
     })()
     return () => {
       cancelled = true
     }
   }, [waterVersion, moveVersion])
 
-  const series = useMemo(
-    () => (data ? buildDailySeries(now, DAYS, data.water, data.movement, todos) : []),
+  const longSeries = useMemo(
+    () => (data ? buildDailySeries(now, STREAK_DAYS, data.water, data.movement, todos) : []),
     // `now` intentionally excluded: recomputed whenever data changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data, todos],
   )
+  const series = useMemo(() => longSeries.slice(-DAYS), [longSeries])
   const summary = summarize(series, goal)
+  const waterStreak = currentStreak(longSeries, (d) => d.waterMl >= goal)
+  const moveStreak = currentStreak(longSeries, (d) => d.moves > 0)
+  const waterRate = data ? compliance(data.events, 'water', now) : null
+  const moveRate = data ? compliance(data.events, 'movement', now) : null
   const weekday = new Intl.DateTimeFormat(i18n.language, { weekday: 'short' })
   const dateFmt = new Intl.DateTimeFormat(i18n.language, {
     weekday: 'short',
@@ -57,6 +69,10 @@ export function StatsPage() {
     month: 'numeric',
   })
   const num = new Intl.NumberFormat(i18n.language)
+  const percent = new Intl.NumberFormat(i18n.language, {
+    style: 'percent',
+    maximumFractionDigits: 0,
+  })
   const todayKey = series[series.length - 1]?.key
 
   const bars = (pick: (d: (typeof series)[number]) => number): BarDatum[] =>
@@ -94,7 +110,24 @@ export function StatsPage() {
             <StatTile label={t('stats.goalDays')} value={`${summary.goalDays}/${DAYS}`} />
             <StatTile label={t('stats.totalMoves')} value={num.format(summary.totalMoves)} />
             <StatTile label={t('stats.totalTasks')} value={num.format(summary.totalTasks)} />
+            <StatTile
+              label={t('stats.streakWater')}
+              value={t('stats.days', { count: waterStreak })}
+            />
+            <StatTile
+              label={t('stats.streakMove')}
+              value={t('stats.days', { count: moveStreak })}
+            />
+            <StatTile
+              label={t('stats.complianceWater')}
+              value={waterRate?.rate == null ? '—' : percent.format(waterRate.rate)}
+            />
+            <StatTile
+              label={t('stats.complianceMove')}
+              value={moveRate?.rate == null ? '—' : percent.format(moveRate.rate)}
+            />
           </div>
+          <p className="px-1 text-xs text-muted-foreground">{t('stats.complianceHint')}</p>
 
           <Card>
             <CardContent className="space-y-6">

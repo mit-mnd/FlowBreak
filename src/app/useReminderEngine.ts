@@ -33,6 +33,7 @@ import {
   type ReminderAppointment,
 } from './reminders-store'
 import { notificationText } from './reminder-text'
+import { logOutcome, logShown } from './reminder-log'
 
 const TICK_MS = 30_000
 /** Appointments are time-critical, so they are checked more often than habit reminders. */
@@ -96,6 +97,7 @@ export function useReminderEngine(ready: boolean, dark: boolean): void {
       now: number,
       appointments: ReminderAppointment[] = [],
     ) => {
+      logShown(due, now)
       const prev = reminders().current
       const kinds = Array.from(new Set([...(prev?.kinds ?? []), ...due]))
       const shown = prev?.appointments ?? []
@@ -201,6 +203,7 @@ export function useReminderEngine(ready: boolean, dark: boolean): void {
           void showMainWindow()
         } else if (msg.action === 'snooze' || msg.action === 'skip') {
           reminders().act(kind, msg.action)
+          logOutcome(kind, msg.action === 'snooze' ? 'snoozed' : 'skipped')
         }
       }
       // The popup window updates itself; only push changes for in-app actions.
@@ -217,12 +220,14 @@ export function useReminderEngine(ready: boolean, dark: boolean): void {
       useHydration.subscribe((s, prev) => {
         if (s.lastLoggedAt && s.lastLoggedAt !== prev.lastLoggedAt) {
           reminders().act('water', 'done')
+          logOutcome('water', 'done')
           if (reminders().current?.kinds.includes('water')) dismiss(['water'], true)
         }
       }),
       useMovement.subscribe((s, prev) => {
         if (s.lastLoggedAt && s.lastLoggedAt !== prev.lastLoggedAt) {
           reminders().act('movement', 'done')
+          logOutcome('movement', 'done')
           if (reminders().current?.kinds.includes('movement')) dismiss(['movement'], true)
         }
       }),

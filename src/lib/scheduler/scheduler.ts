@@ -23,7 +23,16 @@ export function createInitialState(now: number): SchedulerState {
     sittingSince: now,
     snoozedUntil: { water: 0, movement: 0 },
     pausedUntil: 0,
+    unanswered: { water: 0, movement: 0 },
   }
+}
+
+const NONE_UNANSWERED = { water: 0, movement: 0 } as const
+
+/** Wait before showing an unanswered reminder again, given how many went unanswered so far. */
+export function renotifyDelayMin(unanswered: number, config: SchedulerConfig): number {
+  const cap = Math.max(config.renotifyMin, config.renotifyMaxMin)
+  return Math.min(cap, config.renotifyMin * config.renotifyBackoff ** unanswered)
 }
 
 export function isWithinWorkHours(now: number, wh: WorkHours): boolean {
@@ -82,11 +91,22 @@ export function tick(input: TickInput, state: SchedulerState, config: SchedulerC
 
   // Away (idle or screen locked): the user is not sitting, so reset the sitting timer.
   if (idleSec >= config.idleResetMin * 60) {
-    return { state: { ...state, sittingSince: now }, due: [], away: true, gentle: false }
+    const unanswered = { ...NONE_UNANSWERED }
+    return {
+      state: { ...state, sittingSince: now, unanswered },
+      due: [],
+      away: true,
+      gentle: false,
+    }
   }
 
   const quiet = now < state.pausedUntil || !isWithinWorkHours(now, config.workHours)
-  if (quiet) return { state, due: [], away: false, gentle: false }
+  if (quiet) {
+    // A fresh start after hours or a pause: do not carry the backoff over.
+    const clean = state.unanswered.water === 0 && state.unanswered.movement === 0
+    const next = clean ? state : { ...state, unanswered: { ...NONE_UNANSWERED } }
+    return { state: next, due: [], away: false, gentle: false }
+  }
 
   const due: ReminderKind[] = []
   let gentle = false
@@ -111,10 +131,14 @@ export function tick(input: TickInput, state: SchedulerState, config: SchedulerC
 
   if (due.length === 0) return { state, due, away: false, gentle: false }
 
-  // Mark as shown: if ignored, show again after `renotifyMin`.
+  // Mark as shown: if ignored, show again later, waiting longer each time it goes unanswered.
   const snoozedUntil = { ...state.snoozedUntil }
-  for (const kind of due) snoozedUntil[kind] = now + config.renotifyMin * MINUTE
-  return { state: { ...state, snoozedUntil }, due, away: false, gentle }
+  const unanswered = { ...state.unanswered }
+  for (const kind of due) {
+    snoozedUntil[kind] = now + renotifyDelayMin(unanswered[kind], config) * MINUTE
+    unanswered[kind] += 1
+  }
+  return { state: { ...state, snoozedUntil, unanswered }, due, away: false, gentle }
 }
 
 export function applyAction(
@@ -125,15 +149,17 @@ export function applyAction(
   snoozeMin = DEFAULT_SNOOZE_MIN,
 ): SchedulerState {
   const snoozedUntil = { ...state.snoozedUntil }
+  // Any response counts as engaging, so the backoff starts over.
+  const unanswered = { ...state.unanswered, [kind]: 0 }
   if (action === 'snooze') {
     snoozedUntil[kind] = now + snoozeMin * MINUTE
-    return { ...state, snoozedUntil }
+    return { ...state, snoozedUntil, unanswered }
   }
   // 'done' and 'skip' both start a fresh cycle; only 'done' is logged elsewhere.
   snoozedUntil[kind] = 0
   return kind === 'water'
-    ? { ...state, lastWaterAt: now, snoozedUntil }
-    : { ...state, sittingSince: now, snoozedUntil }
+    ? { ...state, lastWaterAt: now, snoozedUntil, unanswered }
+    : { ...state, sittingSince: now, snoozedUntil, unanswered }
 }
 
 export function pause(state: SchedulerState, until: number): SchedulerState {

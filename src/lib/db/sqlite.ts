@@ -1,5 +1,13 @@
 import Database from '@tauri-apps/plugin-sql'
-import type { Appointment, MovementLog, Repos, Todo, WaterLog } from './types'
+import type {
+  Appointment,
+  MovementLog,
+  ReminderEvent,
+  ReminderOutcome,
+  Repos,
+  Todo,
+  WaterLog,
+} from './types'
 
 // Must match the connection string registered with migrations in src-tauri/src/lib.rs.
 const DB_URL = 'sqlite:flowbreak.db'
@@ -23,6 +31,13 @@ type AppointmentRow = {
   notified_at: number | null
   snoozed_until: number | null
   created_at: number
+}
+type EventRow = {
+  id: string
+  kind: string
+  shown_at: number
+  outcome: string | null
+  resolved_at: number | null
 }
 type WaterRow = { id: string; amount_ml: number; logged_at: number }
 type MovementRow = { id: string; exercise_id: string; duration_sec: number; logged_at: number }
@@ -49,10 +64,38 @@ const toAppointment = (r: AppointmentRow): Appointment => ({
   createdAt: r.created_at,
 })
 
+const OUTCOMES: readonly string[] = ['done', 'snoozed', 'skipped', 'ignored']
+
+const toEvent = (r: EventRow): ReminderEvent => ({
+  id: r.id,
+  kind: r.kind === 'movement' ? 'movement' : 'water',
+  shownAt: r.shown_at,
+  outcome: r.outcome && OUTCOMES.includes(r.outcome) ? (r.outcome as ReminderOutcome) : null,
+  resolvedAt: r.resolved_at,
+})
+
 export async function createSqliteRepos(): Promise<Repos> {
   const db = await Database.load(DB_URL)
 
   return {
+    reminderEvents: {
+      async listSince(ts) {
+        const rows = await db.select<EventRow[]>(
+          'SELECT * FROM reminder_events WHERE shown_at >= $1 ORDER BY shown_at ASC',
+          [ts],
+        )
+        return rows.map(toEvent)
+      },
+      async upsert(e) {
+        await db.execute(
+          `INSERT INTO reminder_events (id, kind, shown_at, outcome, resolved_at)
+           VALUES ($1, $2, $3, $4, $5)
+           ON CONFLICT(id) DO UPDATE SET
+             outcome = excluded.outcome, resolved_at = excluded.resolved_at`,
+          [e.id, e.kind, e.shownAt, e.outcome, e.resolvedAt],
+        )
+      },
+    },
     appointments: {
       async list() {
         const rows = await db.select<AppointmentRow[]>(

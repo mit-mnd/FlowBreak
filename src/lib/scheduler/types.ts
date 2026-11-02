@@ -22,6 +22,10 @@ export type SchedulerConfig = {
   focusMaxDelayMin: number
   /** An ignored reminder is shown again after this many minutes. */
   renotifyMin: number
+  /** Each unanswered reminder multiplies the next wait by this (1 = fixed `renotifyMin`). */
+  renotifyBackoff: number
+  /** Upper bound for the backed-off wait (never below `renotifyMin`). */
+  renotifyMaxMin: number
   /** A natural break (task completed) fires reminders due within this window early. */
   naturalBreakWindowMin: number
 }
@@ -33,6 +37,8 @@ export type SchedulerState = {
   snoozedUntil: Record<ReminderKind, number>
   /** Global pause for all reminders; 0 = not paused. */
   pausedUntil: number
+  /** Consecutive times a reminder was shown without any response; drives the backoff. */
+  unanswered: Record<ReminderKind, number>
 }
 
 export type TickInput = {

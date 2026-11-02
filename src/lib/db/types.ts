@@ -39,6 +39,23 @@ export type Appointment = {
   createdAt: number
 }
 
+export type ReminderOutcome = 'done' | 'snoozed' | 'skipped' | 'ignored'
+
+/** One habit reminder (water / movement) that was shown, and what the user did with it. */
+export type ReminderEvent = {
+  id: string
+  kind: 'water' | 'movement'
+  shownAt: number
+  /** null = still waiting for a response. */
+  outcome: ReminderOutcome | null
+  resolvedAt: number | null
+}
+
+export type ReminderEventRepo = {
+  listSince(ts: number): Promise<ReminderEvent[]>
+  upsert(event: ReminderEvent): Promise<void>
+}
+
 export type AppointmentRepo = {
   list(): Promise<Appointment[]>
   upsert(appointment: Appointment): Promise<void>
@@ -63,4 +80,5 @@ export type Repos = {
   water: LogRepo<WaterLog>
   movement: LogRepo<MovementLog>
   appointments: AppointmentRepo
+  reminderEvents: ReminderEventRepo
 }

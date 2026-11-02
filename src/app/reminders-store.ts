@@ -86,7 +86,10 @@ export const useReminders = create<RemindersStore>((set, get) => {
       const now = Date.now()
       const saved = await kvGet<SchedulerState>(KEY)
       // The app just started, so the user has (re)started a sitting session now.
-      const state = saved ? { ...saved, sittingSince: now } : createInitialState(now)
+      // Spread over a fresh state so fields added in later versions get defaults.
+      const state = saved
+        ? { ...createInitialState(now), ...saved, sittingSince: now }
+        : createInitialState(now)
       set({ state })
     },
     setState: save,
