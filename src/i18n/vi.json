@@ -1,5 +1,8 @@
 {
-  "app": { "name": "FlowBreak", "tagline": "Làm việc khỏe, tập trung bền" },
+  "app": {
+    "name": "FlowBreak",
+    "tagline": "Làm việc khỏe, tập trung bền"
+  },
   "nav": {
     "today": "Hôm nay",
     "tasks": "Công việc",
@@ -57,7 +60,14 @@
       "completeTitle": "Làm tốt lắm! 💪",
       "completeBody": "Cơ thể bạn sẽ cảm ơn bạn. Quay lại làm việc thôi!",
       "logged": "Đã ghi nhận bài tập",
-      "timeLeft": "Thời gian còn lại"
+      "timeLeft": "Thời gian còn lại",
+      "figureLabel": "{{name}}, bước {{step}}: {{text}}"
+    },
+    "filter": {
+      "label": "Lọc bài tập",
+      "all": "Tất cả ({{count}})",
+      "seated": "Tại chỗ ngồi",
+      "standing": "Đứng dậy"
     }
   },
   "exercises": {
@@ -134,6 +144,118 @@
         "Đứng dậy và đi bộ thong thả.",
         "Thả lỏng tay, vung tay nhẹ theo bước chân.",
         "Tiện thể rót một cốc nước nhé."
+      ]
+    },
+    "seated-twist": {
+      "name": "Xoay người khi ngồi",
+      "summary": "Nới lỏng cột sống và phần lưng giữa.",
+      "steps": [
+        "Ngồi thẳng lưng, hai bàn chân đặt chắc trên sàn.",
+        "Xoay thân sang phải, tay phải vịn lưng ghế, nhìn qua vai, giữ 3 nhịp thở.",
+        "Quay về giữa rồi xoay sang trái, giữ 3 nhịp thở."
+      ]
+    },
+    "side-bend": {
+      "name": "Nghiêng người sang bên",
+      "summary": "Kéo giãn hai bên sườn ngay tại chỗ ngồi.",
+      "steps": [
+        "Ngồi thẳng, hai tay đặt trên bàn, thả lỏng vai.",
+        "Giơ tay phải lên cao, nghiêng người sang trái và giữ.",
+        "Đổi tay, nghiêng người sang phải và giữ."
+      ]
+    },
+    "tricep-stretch": {
+      "name": "Giãn tay sau",
+      "summary": "Giải tỏa bắp tay sau và vai khi gõ phím lâu.",
+      "steps": [
+        "Giơ tay phải lên cao, ngồi thẳng lưng.",
+        "Gập khuỷu tay phải, bàn tay chạm giữa hai bả vai.",
+        "Dùng tay trái nhẹ nhàng kéo khuỷu tay phải về phía sau đầu, giữ vài nhịp thở.",
+        "Đổi sang tay trái và lặp lại."
+      ]
+    },
+    "cat-cow": {
+      "name": "Ưỡn và gập lưng khi ngồi",
+      "summary": "Đánh thức cột sống, giảm mỏi lưng.",
+      "steps": [
+        "Ngồi thẳng, hai tay đặt trên đùi.",
+        "Hít vào, ưỡn ngực, ngửa mặt nhẹ nhàng.",
+        "Thở ra, gập lưng tròn, cúi cằm về ngực. Lặp lại chậm rãi."
+      ]
+    },
+    "chair-squat": {
+      "name": "Squat với ghế",
+      "summary": "Đánh thức cơ đùi và mông chỉ với một chiếc ghế.",
+      "steps": [
+        "Đứng trước ghế, hai chân rộng bằng vai, duỗi thẳng hai tay ra trước.",
+        "Đẩy hông ra sau, gập gối hạ người xuống cho đến khi chạm nhẹ vào ghế.",
+        "Đạp gót chân, đứng lên từ từ, giữ lưng thẳng.",
+        "Đứng thẳng hẳn, siết nhẹ mông rồi lặp lại đều nhịp."
+      ]
+    },
+    "desk-pushup": {
+      "name": "Chống đẩy vào bàn",
+      "summary": "Làm khỏe ngực, vai và tay, rất nhẹ nhàng.",
+      "steps": [
+        "Đặt hai tay lên mép bàn chắc chắn, bước chân lùi ra sau, người thẳng như một tấm ván.",
+        "Gập khuỷu tay, hạ ngực về phía bàn, giữ thân thẳng.",
+        "Đẩy tay để trở về, lặp lại đều nhịp."
+      ]
+    },
+    "quad-stretch": {
+      "name": "Giãn đùi trước",
+      "summary": "Kéo giãn cơ đùi sau thời gian ngồi dài.",
+      "steps": [
+        "Đứng thẳng, một tay vịn vào bàn để giữ thăng bằng.",
+        "Gập gối phải, đưa gót chân ra phía sau.",
+        "Dùng tay phải nắm cổ chân, kéo gót chân về phía mông, hai đầu gối sát nhau.",
+        "Giữ vài nhịp thở, thả chân rồi đổi bên."
+      ]
+    },
+    "forward-fold": {
+      "name": "Gập người thả lỏng",
+      "summary": "Thả lỏng lưng, cổ và phần sau của chân.",
+      "steps": [
+        "Đứng thẳng, hai chân rộng bằng hông.",
+        "Gập người từ hông, lưng thẳng, để hai tay trượt xuống phía trước.",
+        "Thả lỏng đầu và tay, gối hơi chùng, hít thở sâu. Đứng dậy thật chậm."
+      ]
+    },
+    "march": {
+      "name": "Nâng gối tại chỗ",
+      "summary": "Làm ấm cơ thể và tăng tuần hoàn.",
+      "steps": [
+        "Đứng thẳng, hai tay thả lỏng.",
+        "Nâng đầu gối phải cao ngang hông, tay trái đưa lên theo.",
+        "Đổi bên, nâng gối trái, tay phải đưa lên theo. Lặp lại đều nhịp."
+      ]
+    },
+    "ankle-circles": {
+      "name": "Xoay cổ chân",
+      "summary": "Giúp máu lưu thông xuống bàn chân.",
+      "steps": [
+        "Ngồi thẳng, nhấc bàn chân phải khỏi sàn.",
+        "Xoay cổ chân theo vòng tròn lớn, 5 vòng theo chiều kim đồng hồ.",
+        "Xoay ngược chiều, rồi đổi sang chân trái."
+      ]
+    },
+    "deep-breathing": {
+      "name": "Thở sâu thư giãn",
+      "summary": "Hạ nhịp tim và làm dịu đầu óc.",
+      "steps": [
+        "Ngồi thẳng, đặt một tay lên bụng.",
+        "Hít vào bằng mũi trong 4 nhịp, bụng phình ra.",
+        "Giữ hơi 4 nhịp.",
+        "Thở ra từ từ bằng miệng trong 6 nhịp. Lặp lại."
+      ]
+    },
+    "leg-raise": {
+      "name": "Duỗi chân khi ngồi",
+      "summary": "Kích hoạt cơ đùi mà không cần đứng dậy.",
+      "steps": [
+        "Ngồi thẳng, hai bàn chân đặt trên sàn.",
+        "Duỗi thẳng chân phải ra trước, giữ 2 giây rồi hạ xuống.",
+        "Đổi sang chân trái, lặp lại đều nhịp."
       ]
     }
   },
@@ -325,7 +447,11 @@
     "notifications": "Thông báo",
     "popup": "Cửa sổ nhắc ở góc màn hình luôn được bật.",
     "reminderLevel": "Khi bạn chưa phản hồi",
-    "reminderLevels": { "light": "Nhẹ", "normal": "Vừa", "frequent": "Dày" },
+    "reminderLevels": {
+      "light": "Nhẹ",
+      "normal": "Vừa",
+      "frequent": "Dày"
+    },
     "reminderLevelHints": {
       "light": "Nhắc lại thưa rất nhanh: 15, 45, rồi 60 phút.",
       "normal": "Nhắc lại thưa dần: 15, 30, rồi 60 phút.",

@@ -1,32 +1,35 @@
-import {
-  Accessibility,
-  Eye,
-  Footprints,
-  Hand,
-  MoveVertical,
-  PersonStanding,
-  RotateCcw,
-  Sparkles,
-  type LucideIcon,
-} from 'lucide-react'
+/** Where the exercise can be done: at the desk, or after getting up. */
+export type Posture = 'seated' | 'standing'
 
 export type Exercise = {
   id: string
   durationSec: number
-  /** Number of instruction steps in i18n `exercises.<id>.steps`. */
+  /** Number of instruction steps in i18n `exercises.<id>.steps` (and of poses in the art). */
   stepCount: number
-  icon: LucideIcon
+  posture: Posture
 }
 
 export const EXERCISES: readonly Exercise[] = [
-  { id: 'standing-stretch', durationSec: 45, stepCount: 4, icon: PersonStanding },
-  { id: 'neck-roll', durationSec: 40, stepCount: 4, icon: RotateCcw },
-  { id: 'wrist-stretch', durationSec: 40, stepCount: 4, icon: Hand },
-  { id: 'chest-opener', durationSec: 45, stepCount: 3, icon: Sparkles },
-  { id: 'shoulder-roll', durationSec: 30, stepCount: 3, icon: Accessibility },
-  { id: 'calf-raise', durationSec: 60, stepCount: 3, icon: MoveVertical },
-  { id: 'eye-rest', durationSec: 30, stepCount: 3, icon: Eye },
-  { id: 'walk', durationSec: 120, stepCount: 3, icon: Footprints },
+  { id: 'standing-stretch', durationSec: 45, stepCount: 4, posture: 'standing' },
+  { id: 'neck-roll', durationSec: 40, stepCount: 4, posture: 'seated' },
+  { id: 'wrist-stretch', durationSec: 40, stepCount: 4, posture: 'seated' },
+  { id: 'chest-opener', durationSec: 45, stepCount: 3, posture: 'standing' },
+  { id: 'shoulder-roll', durationSec: 30, stepCount: 3, posture: 'seated' },
+  { id: 'calf-raise', durationSec: 60, stepCount: 3, posture: 'standing' },
+  { id: 'eye-rest', durationSec: 30, stepCount: 3, posture: 'seated' },
+  { id: 'walk', durationSec: 120, stepCount: 3, posture: 'standing' },
+  { id: 'seated-twist', durationSec: 40, stepCount: 3, posture: 'seated' },
+  { id: 'side-bend', durationSec: 30, stepCount: 3, posture: 'seated' },
+  { id: 'tricep-stretch', durationSec: 40, stepCount: 4, posture: 'seated' },
+  { id: 'cat-cow', durationSec: 40, stepCount: 3, posture: 'seated' },
+  { id: 'chair-squat', durationSec: 60, stepCount: 4, posture: 'standing' },
+  { id: 'desk-pushup', durationSec: 45, stepCount: 3, posture: 'standing' },
+  { id: 'quad-stretch', durationSec: 60, stepCount: 4, posture: 'standing' },
+  { id: 'forward-fold', durationSec: 45, stepCount: 3, posture: 'standing' },
+  { id: 'march', durationSec: 60, stepCount: 3, posture: 'standing' },
+  { id: 'ankle-circles', durationSec: 30, stepCount: 3, posture: 'seated' },
+  { id: 'deep-breathing', durationSec: 60, stepCount: 4, posture: 'seated' },
+  { id: 'leg-raise', durationSec: 45, stepCount: 3, posture: 'seated' },
 ]
 
 export function getExercise(id: string | null | undefined): Exercise {

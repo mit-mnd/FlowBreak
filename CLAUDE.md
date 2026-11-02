@@ -53,7 +53,7 @@ src/
   app/              # App shell, routing, layout, providers
   features/
     hydration/      # nhắc uống nước: store, components, logic
-    movement/       # nhắc vận động, danh sách bài tập, màn hình hướng dẫn
+    movement/       # nhắc vận động, danh sách bài tập, màn hình hướng dẫn; art/ = hình người que SVG theo từng bước (thêm bài tập phải thêm đủ stepCount pose + i18n cả 3 file)
     todos/          # to-do list
     focus/          # Focus mode, liên kết task với lời nhắc
     schedule/       # lịch hẹn: logic thuần (đến hạn, nhóm theo ngày, validate form), store, trang + form đặt lịch

@@ -8,6 +8,7 @@ import { ProgressRing } from '@/components/ProgressRing'
 import { formatClock } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { getExercise, stepAt } from '../exercises'
+import { AnimatedFigure, StepFigure } from './ExerciseFigure'
 import { useMovement } from '../store'
 
 /** Full-screen guided exercise with step-by-step instructions and a countdown. */
@@ -97,25 +98,31 @@ function SessionView({ exerciseId }: { exerciseId: string }) {
           {t(`exercises.${ex.id}.summary`)}
         </p>
 
-        <ProgressRing
-          value={elapsed / ex.durationSec}
-          size={196}
-          stroke={12}
-          tone="move"
-          label={t('movement.session.timeLeft')}
-          className="my-6"
-        >
-          {finished ? (
-            <Check className="size-14 text-move" aria-hidden />
-          ) : (
-            <div>
-              <div className="text-4xl font-semibold tabular-nums" aria-live="off">
-                {formatClock(ex.durationSec - elapsed)}
+        <div className="my-4 flex w-full max-w-sm flex-wrap items-center justify-center gap-x-4 gap-y-2">
+          <div className="rounded-2xl border bg-card p-1 shadow-sm">
+            <AnimatedFigure exerciseId={ex.id} step={step} className="size-44 sm:size-48" />
+          </div>
+          <ProgressRing
+            value={elapsed / ex.durationSec}
+            size={128}
+            stroke={10}
+            tone="move"
+            label={t('movement.session.timeLeft')}
+          >
+            {finished ? (
+              <Check className="size-10 text-move" aria-hidden />
+            ) : (
+              <div>
+                <div className="text-2xl font-semibold tabular-nums" aria-live="off">
+                  {formatClock(ex.durationSec - elapsed)}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {t('movement.session.timeLeft')}
+                </div>
               </div>
-              <div className="text-xs text-muted-foreground">{t('movement.session.timeLeft')}</div>
-            </div>
-          )}
-        </ProgressRing>
+            )}
+          </ProgressRing>
+        </div>
 
         {finished ? (
           <div className="text-center" aria-live="polite">
@@ -131,7 +138,7 @@ function SessionView({ exerciseId }: { exerciseId: string }) {
                 key={i}
                 aria-current={i === step ? 'step' : undefined}
                 className={cn(
-                  'flex gap-3 rounded-lg border p-3 text-sm transition-colors duration-200',
+                  'flex items-center gap-3 rounded-lg border p-2 text-sm transition-colors duration-200',
                   i === step
                     ? 'border-move/50 bg-move-soft text-move-soft-foreground'
                     : i < step
@@ -139,8 +146,15 @@ function SessionView({ exerciseId }: { exerciseId: string }) {
                       : 'border-transparent text-muted-foreground',
                 )}
               >
-                <span className="font-semibold tabular-nums">{i + 1}.</span>
-                <span>{t(`exercises.${ex.id}.steps.${i}`)}</span>
+                <StepFigure
+                  exerciseId={ex.id}
+                  step={i}
+                  className="size-12 shrink-0 rounded-md border bg-card"
+                />
+                <span className="min-w-0">
+                  <span className="font-semibold tabular-nums">{i + 1}. </span>
+                  {t(`exercises.${ex.id}.steps.${i}`)}
+                </span>
               </li>
             ))}
           </ol>

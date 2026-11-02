@@ -1,5 +1,8 @@
 {
-  "app": { "name": "FlowBreak", "tagline": "Work healthy, stay focused" },
+  "app": {
+    "name": "FlowBreak",
+    "tagline": "Work healthy, stay focused"
+  },
   "nav": {
     "today": "Today",
     "tasks": "Tasks",
@@ -57,7 +60,14 @@
       "completeTitle": "Nice work! 💪",
       "completeBody": "Your body thanks you. Back to it!",
       "logged": "Exercise logged",
-      "timeLeft": "Time left"
+      "timeLeft": "Time left",
+      "figureLabel": "{{name}}, step {{step}}: {{text}}"
+    },
+    "filter": {
+      "label": "Filter exercises",
+      "all": "All ({{count}})",
+      "seated": "At your desk",
+      "standing": "Standing"
     }
   },
   "exercises": {
@@ -134,6 +144,118 @@
         "Stand up and walk at an easy pace.",
         "Relax your arms and let them swing.",
         "Grab a glass of water on the way."
+      ]
+    },
+    "seated-twist": {
+      "name": "Seated twist",
+      "summary": "Loosen up your spine and mid back.",
+      "steps": [
+        "Sit tall with both feet flat on the floor.",
+        "Twist to the right, hold the chair back with your right hand, look over your shoulder for 3 breaths.",
+        "Come back to the center, then twist to the left for 3 breaths."
+      ]
+    },
+    "side-bend": {
+      "name": "Side bend",
+      "summary": "Stretch both sides of your torso without leaving your seat.",
+      "steps": [
+        "Sit tall, rest your hands on the desk, relax your shoulders.",
+        "Raise your right arm and lean to the left. Hold.",
+        "Switch arms and lean to the right. Hold."
+      ]
+    },
+    "tricep-stretch": {
+      "name": "Triceps stretch",
+      "summary": "Ease the back of your arms and shoulders after long typing.",
+      "steps": [
+        "Raise your right arm overhead and sit tall.",
+        "Bend your right elbow so your hand reaches between your shoulder blades.",
+        "Gently pull the right elbow behind your head with your left hand. Hold a few breaths.",
+        "Switch to the left arm and repeat."
+      ]
+    },
+    "cat-cow": {
+      "name": "Seated cat-cow",
+      "summary": "Wake up your spine and relieve a tired back.",
+      "steps": [
+        "Sit tall with your hands on your thighs.",
+        "Breathe in, lift your chest and gently look up.",
+        "Breathe out, round your back and tuck your chin. Repeat slowly."
+      ]
+    },
+    "chair-squat": {
+      "name": "Chair squat",
+      "summary": "Wake up your thighs and glutes with just a chair.",
+      "steps": [
+        "Stand in front of a chair, feet shoulder-width apart, arms stretched forward.",
+        "Push your hips back and bend your knees until you lightly touch the chair.",
+        "Press through your heels and stand up slowly, keeping your back straight.",
+        "Stand tall, squeeze your glutes, then repeat at an even pace."
+      ]
+    },
+    "desk-pushup": {
+      "name": "Desk push-up",
+      "summary": "Strengthen chest, shoulders and arms, very gently.",
+      "steps": [
+        "Place both hands on a sturdy desk edge and step back so your body is a straight plank.",
+        "Bend your elbows and lower your chest toward the desk, keeping your body straight.",
+        "Push back up and repeat at an even pace."
+      ]
+    },
+    "quad-stretch": {
+      "name": "Quad stretch",
+      "summary": "Lengthen the front of your thighs after sitting for long.",
+      "steps": [
+        "Stand tall and hold the desk with one hand for balance.",
+        "Bend your right knee and bring your heel behind you.",
+        "Hold your ankle with your right hand and pull the heel toward your glutes, knees together.",
+        "Hold a few breaths, release, then switch sides."
+      ]
+    },
+    "forward-fold": {
+      "name": "Forward fold",
+      "summary": "Release your back, neck and hamstrings.",
+      "steps": [
+        "Stand tall with your feet hip-width apart.",
+        "Hinge forward from your hips with a straight back and let your hands slide down.",
+        "Let your head and arms hang, knees slightly soft, and breathe deeply. Rise up very slowly."
+      ]
+    },
+    "march": {
+      "name": "Marching in place",
+      "summary": "Warm up your body and get the blood flowing.",
+      "steps": [
+        "Stand tall with your arms relaxed.",
+        "Lift your right knee to hip height while your left arm swings up.",
+        "Switch sides: left knee up, right arm up. Repeat at an even pace."
+      ]
+    },
+    "ankle-circles": {
+      "name": "Ankle circles",
+      "summary": "Help blood flow down to your feet.",
+      "steps": [
+        "Sit tall and lift your right foot off the floor.",
+        "Draw big circles with your ankle, 5 times clockwise.",
+        "Reverse the direction, then switch to the left foot."
+      ]
+    },
+    "deep-breathing": {
+      "name": "Deep breathing",
+      "summary": "Slow your heart rate and calm your mind.",
+      "steps": [
+        "Sit tall and rest one hand on your belly.",
+        "Breathe in through your nose for 4 counts, letting your belly rise.",
+        "Hold for 4 counts.",
+        "Breathe out slowly through your mouth for 6 counts. Repeat."
+      ]
+    },
+    "leg-raise": {
+      "name": "Seated leg extension",
+      "summary": "Activate your thighs without getting up.",
+      "steps": [
+        "Sit tall with both feet on the floor.",
+        "Straighten your right leg in front of you, hold for 2 seconds, then lower it.",
+        "Switch to the left leg and repeat at an even pace."
       ]
     }
   },
@@ -324,7 +446,11 @@
     "workDays": "Work days",
     "notifications": "Notifications",
     "reminderLevel": "When you have not responded",
-    "reminderLevels": { "light": "Light", "normal": "Normal", "frequent": "Frequent" },
+    "reminderLevels": {
+      "light": "Light",
+      "normal": "Normal",
+      "frequent": "Frequent"
+    },
     "reminderLevelHints": {
       "light": "Backs off quickly: 15, 45, then 60 minutes.",
       "normal": "Backs off gradually: 15, 30, then 60 minutes.",
