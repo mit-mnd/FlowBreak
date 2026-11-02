@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { BarChart3, CalendarDays, House, ListChecks, Settings } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useNow } from '@/lib/use-now'
+import { overdueCount, useAppointments } from '@/features/schedule'
 import { useNavigation, VIEWS, type View } from './navigation'
 
 const ICONS: Record<View, LucideIcon> = {
@@ -17,6 +19,8 @@ export function BottomNav() {
   const { t } = useTranslation()
   const view = useNavigation((s) => s.view)
   const setView = useNavigation((s) => s.setView)
+  const now = useNow(30_000)
+  const overdue = useAppointments((s) => overdueCount(s.items, now))
 
   // Ctrl+1..5 switches tabs.
   useEffect(() => {
@@ -57,11 +61,17 @@ export function BottomNav() {
               >
                 <span
                   className={cn(
-                    'grid h-7 w-12 place-items-center rounded-full transition-colors',
+                    'relative grid h-7 w-12 place-items-center rounded-full transition-colors',
                     active && 'bg-water-soft',
                   )}
                 >
                   <Icon className="size-5" aria-hidden />
+                  {v === 'schedule' && overdue > 0 && (
+                    <span className="absolute -top-1 right-1 grid min-w-4 place-items-center rounded-full bg-danger px-1 text-[10px] leading-4 font-semibold text-white tabular-nums">
+                      <span aria-hidden>{overdue > 9 ? '9+' : overdue}</span>
+                      <span className="sr-only">{t('nav.overdueBadge', { count: overdue })}</span>
+                    </span>
+                  )}
                 </span>
                 {t(`nav.${v}`)}
               </button>

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { BellRing, Check, Trash2 } from 'lucide-react'
+import { AlertCircle, BellRing, Check, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { deleteAppointment } from '../actions'
@@ -70,6 +70,12 @@ export function AppointmentItem({ appointment: a, now, onEdit }: AppointmentItem
             {fmt.time(a.startsAt)}
             {!a.done && ` · ${fmt.relative(a.startsAt - now)}`}
           </span>
+          {overdue && (
+            <span className="flex items-center gap-0.5 rounded-full bg-danger/10 px-1.5 py-0.5 font-medium text-danger">
+              <AlertCircle className="size-3" aria-hidden />
+              {t('schedule.missedBadge')}
+            </span>
+          )}
           {a.remindBeforeMin > 0 && !a.done && (
             <span className="flex items-center gap-0.5">
               <BellRing className="size-3" aria-hidden />

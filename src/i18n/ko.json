@@ -6,7 +6,8 @@
     "schedule": "일정",
     "stats": "통계",
     "settings": "설정",
-    "label": "주요 메뉴"
+    "label": "주요 메뉴",
+    "overdueBadge": "지났지만 완료하지 않은 일정 {{count}}개"
   },
   "greeting": {
     "morning": "좋은 아침이에요",
@@ -176,6 +177,7 @@
     "today": "오늘",
     "tomorrow": "내일",
     "overdue": "지났지만 완료하지 않음",
+    "missedBadge": "놓침",
     "allClear": "다가오는 일정이 없어요 ✨",
     "doneSection": "완료 ({{count}})",
     "emptyTitle": "아직 일정이 없어요",
@@ -238,6 +240,7 @@
     "appointment": {
       "notifyTitle": "일정: {{title}}",
       "body": "{{time}}에",
+      "missedBody": "놓친 일정이에요 ({{when}})",
       "gotIt": "확인"
     },
     "drank": "마셨어요",

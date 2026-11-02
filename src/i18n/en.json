@@ -6,7 +6,8 @@
     "schedule": "Schedule",
     "stats": "Stats",
     "settings": "Settings",
-    "label": "Main navigation"
+    "label": "Main navigation",
+    "overdueBadge": "{{count}} past appointments not done"
   },
   "greeting": {
     "morning": "Good morning",
@@ -179,6 +180,7 @@
     "today": "Today",
     "tomorrow": "Tomorrow",
     "overdue": "Past, not done",
+    "missedBadge": "Missed",
     "allClear": "Nothing coming up ✨",
     "doneSection": "Done ({{count}})",
     "emptyTitle": "No appointments yet",
@@ -241,6 +243,7 @@
     "appointment": {
       "notifyTitle": "Appointment: {{title}}",
       "body": "At {{time}}",
+      "missedBody": "You missed this one (at {{when}})",
       "gotIt": "Got it"
     },
     "drank": "Drank",

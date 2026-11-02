@@ -31,6 +31,21 @@ export function dueAppointments(items: Appointment[], now: number): Appointment[
   return items.filter((a) => isDue(a, now)).sort((a, b) => a.startsAt - b.startsAt)
 }
 
+/**
+ * Missed = never notified and now too late for a normal reminder (e.g. the app was
+ * closed). Shown once as a catch-up notice when the app is running again.
+ */
+export function missedAppointments(items: Appointment[], now: number): Appointment[] {
+  return items
+    .filter((a) => !a.done && a.notifiedAt === null && now > a.startsAt + NOTIFY_GRACE_MS)
+    .sort((a, b) => a.startsAt - b.startsAt)
+}
+
+/** Appointments that already started but are not marked done. */
+export function overdueCount(items: Appointment[], now: number): number {
+  return items.filter((a) => !a.done && a.startsAt < now).length
+}
+
 export type AppointmentGroups = {
   /** Started already but not marked done. */
   overdue: Appointment[]

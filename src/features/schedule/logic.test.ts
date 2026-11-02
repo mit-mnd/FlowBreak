@@ -8,6 +8,8 @@ import {
   fromInputs,
   groupAppointments,
   isDue,
+  missedAppointments,
+  overdueCount,
   relativeParts,
   remindAt,
   toDateInput,
@@ -31,6 +33,39 @@ const appt = (over: Partial<Appointment> = {}): Appointment => ({
   snoozedUntil: null,
   createdAt: 0,
   ...over,
+})
+
+describe('missed appointments', () => {
+  const late = (over: Partial<Appointment> = {}) =>
+    appt({ startsAt: now - NOTIFY_GRACE_MS - MINUTE, ...over })
+
+  it('lists never-notified appointments past the grace period', () => {
+    expect(missedAppointments([late()], now)).toHaveLength(1)
+  })
+
+  it('ignores done, already notified and still-due appointments', () => {
+    const items = [
+      late({ id: 'done', done: true }),
+      late({ id: 'seen', notifiedAt: now - HOUR }),
+      appt({ id: 'fresh', startsAt: now - HOUR }),
+    ]
+    expect(missedAppointments(items, now)).toEqual([])
+  })
+
+  it('orders by start time, oldest first', () => {
+    const a = late({ id: 'a', startsAt: now - 10 * HOUR })
+    const b = late({ id: 'b', startsAt: now - 20 * HOUR })
+    expect(missedAppointments([a, b], now).map((x) => x.id)).toEqual(['b', 'a'])
+  })
+
+  it('counts started-but-not-done appointments as overdue', () => {
+    const items = [
+      appt({ id: 'past', startsAt: now - HOUR }),
+      appt({ id: 'done', startsAt: now - HOUR, done: true }),
+      appt({ id: 'future' }),
+    ]
+    expect(overdueCount(items, now)).toBe(1)
+  })
 })
 
 describe('notification timing', () => {

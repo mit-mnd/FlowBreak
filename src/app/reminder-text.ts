@@ -31,7 +31,17 @@ export function appointmentLine(a: ReminderAppointment, t: TFunction, locale: st
   const time = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(
     a.startsAt,
   )
-  const at = t('reminders.appointment.body', { time })
+  const when = a.missed
+    ? new Intl.DateTimeFormat(locale, {
+        day: 'numeric',
+        month: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }).format(a.startsAt)
+    : time
+  const at = a.missed
+    ? t('reminders.appointment.missedBody', { when })
+    : t('reminders.appointment.body', { time })
   return { title: a.title, body: a.note ? `${at} · ${a.note}` : at }
 }
 

@@ -17,6 +17,8 @@ export type ReminderAppointment = {
   title: string
   note: string
   startsAt: number
+  /** Caught up after the fact (app was closed): show the date, not just the time. */
+  missed?: boolean
 }
 
 export type ActiveReminder = {

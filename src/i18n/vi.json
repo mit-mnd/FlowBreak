@@ -6,7 +6,8 @@
     "schedule": "Lịch hẹn",
     "stats": "Thống kê",
     "settings": "Cài đặt",
-    "label": "Điều hướng chính"
+    "label": "Điều hướng chính",
+    "overdueBadge": "{{count}} lịch hẹn đã qua, chưa xong"
   },
   "greeting": {
     "morning": "Chào buổi sáng",
@@ -179,6 +180,7 @@
     "today": "Hôm nay",
     "tomorrow": "Ngày mai",
     "overdue": "Đã qua, chưa xong",
+    "missedBadge": "Đã lỡ",
     "allClear": "Không còn lịch hẹn nào sắp tới ✨",
     "doneSection": "Đã xong ({{count}})",
     "emptyTitle": "Chưa có lịch hẹn",
@@ -241,6 +243,7 @@
     "appointment": {
       "notifyTitle": "Lịch hẹn: {{title}}",
       "body": "Lúc {{time}}",
+      "missedBody": "Bạn đã lỡ lịch này (lúc {{when}})",
       "gotIt": "Đã rõ"
     },
     "drank": "Đã uống",

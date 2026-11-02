@@ -18,7 +18,12 @@ import { toSchedulerConfig, useSettings } from '@/features/settings'
 import { isFocusActive, useFocus } from '@/features/focus'
 import { logWater, totalForDay, useHydration } from '@/features/hydration'
 import { pickExercise, useMovement } from '@/features/movement'
-import { dueAppointments, useAppointments, type Appointment } from '@/features/schedule'
+import {
+  dueAppointments,
+  missedAppointments,
+  useAppointments,
+  type Appointment,
+} from '@/features/schedule'
 import { useTodos } from '@/features/todos'
 import { useNavigation } from './navigation'
 import {
@@ -117,13 +122,18 @@ export function useReminderEngine(ready: boolean, dark: boolean): void {
     /** Notify for appointments whose reminder time has come. Ignores work hours and pauses. */
     const checkAppointments = async () => {
       const now = Date.now()
-      const due = dueAppointments(useAppointments.getState().items, now)
-      if (due.length === 0) return
+      const items = useAppointments.getState().items
+      const due = dueAppointments(items, now)
+      const missed = missedAppointments(items, now)
+      if (due.length === 0 && missed.length === 0) return
       useAppointments.getState().markNotified(
-        due.map((a) => a.id),
+        [...due, ...missed].map((a) => a.id),
         now,
       )
-      await present([], false, now, due.map(toReminderAppointment))
+      await present([], false, now, [
+        ...missed.map((a) => ({ ...toReminderAppointment(a), missed: true })),
+        ...due.map(toReminderAppointment),
+      ])
     }
 
     const run = async (naturalBreak = false) => {
